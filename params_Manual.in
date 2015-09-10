@@ -1,0 +1,51 @@
+###############################################################################
+# Parameters for the periodic boundary conditions
+# !!! DO NOT REMOVE LINES OR CHANGE THEIR ORDER
+# -> Partition problem / spin 1/2 geometry
+60	= nx
+60	= ny
+6	= NbOfNeighs
+#
+# -> Hamiltonian parameters
+0	= V/t input type
+	  0 : VtN | VtInit, VtEnd
+	  1 : VtN | VtValues[]
+21	= number of steps
+# "V/t" Values :
+-1 1
+#
+# Diagonal coefficients values (if applicable)
+0	= alpha_0
+1	= alpha_3
+#
+# V/t shift (if applicable)
+100	= shift_0
+0	= shift_3
+#
+# -> Monte-Carlo parameters
+120	= Number of stacks
+0.08	= Delta Beta
+0	= Number of iterations before calculating an observable
+	  If set to 0, the program will use an default value N * L
+4000	= Number of measures
+3000	= Measures to use
+128	= Length of autocorrelations
+256	= Minimal number of bins
+#
+# -> Machine options
+3	= Type of output file
+	  0 : Direct (Lab, home)        1 : Parallel (Lab --- old)
+	  2 : Torque (totoro, MESU)     3 : SLURM (Lab)
+4	= Total number of processors
+1	= Flip types
+	  0 : full border flips
+	  1 : local mag flips
+	  2 : partial border flips
+42	= RNG seed
+#
+# Output folder name :
+test
+#
+# Executable to use :
+CMC_Mixed_Lab
+###############################################################################

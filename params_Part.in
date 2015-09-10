@@ -1,0 +1,56 @@
+###############################################################################
+# Parameters for the fixed boundary conditions
+# !!! DO NOT REMOVE LINES OR CHANGE THEIR ORDER
+# -> Partition problem / spin 1/2 geometry
+2	= nx
+2	= ny (set as 1 to get 1D partitions)
+2	= p
+6	= NbOfNeighs
+#
+# -> Hamiltonian parameters
+1	= V/t input type
+	  0 : VtN | VtInit, VtEnd
+	  1 : VtN | VtValues[]
+4	= number of steps
+# "V/t" Values :
+-100 -10 -0.5 0.5
+#
+# Diagonal coefficients values (if applicable)
+0	= alpha_0
+1	= alpha_3
+#
+# V/t shift (if applicable)
+0	= shift_0
+0	= shift_3
+#
+# -> Monte-Carlo parameters
+120	= Number of stacks
+0.08	= Delta Beta
+0	= Number of iterations before calculating an observable
+	  If set to 0, the program will use an default value N * L
+1200	= Number of measures
+1000	= Measures to use
+128	= Length of autocorrelations
+256	= Minimal number of bins
+#
+# -> Machine options
+1       = Type of output file
+          0 : Direct (Lab, home)        1 : Parallel (Lab --- old)
+          2 : Torque (totoro, MESU)     3 : SLURM (Lab)
+4       = Total number of processors
+0	= Initial condition type (only valid for partition problems)
+	  0 : Fixed IC
+	  1 : Random IC
+	  2 : Star 3 IC
+1	= Boundary conditions type
+	  0 : free (partial border flip)
+	  1 : fixed
+	  2 : "free" (partial border flips)
+42	= RNG seed
+#
+# Output folder name
+Ni_test
+#
+# Executable to use :
+CMC_Mixed
+###############################################################################
