@@ -442,17 +442,23 @@ public:
 	double GetQEnergy_N0();
 	double GetQEnergy_Mixed();
 
+	double GetQNewEnergy_N3();
+	double GetQNewEnergy_N0();
+	double GetQNewEnergy_Mixed();
+
 	double GetPotEnergy_N3();
 	double GetPotEnergy_N0();
 	double GetPotEnergy_Mixed();
 
 	double GetKinEnergy();
+	double GetNewKinEnergy();
+
 	void   GetKinEnergyDensity(vector<double> & KinOut);
 	void   GetPotV3EnergyDensity(vector<double> & PotOut);
 	void   GetPotV0EnergyDensity(vector<double> & PotOut);
 
 	void   GetAllQEnergy_Mixed(vector<double> & dummyVec);
-
+	void   GetAllNewQEnergy_Mixed(vector<double> & dummyVec);
 
 	// *******************************************************************
 	// Conf randomizers

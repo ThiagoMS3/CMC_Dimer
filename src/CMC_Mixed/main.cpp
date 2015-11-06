@@ -83,16 +83,19 @@ int main(int argc, char **argv)
 //	OrderParam	MeanRadius;
 
 	OrderParam	MeanQEnergy;
-    OrderParam	MeanQKinEnergy;
-    OrderParam	MeanQPotEnergy;
+        OrderParam	MeanQKinEnergy;
+        OrderParam	MeanQPotEnergy;
 
+	OrderParam      MeanQNewEnergy;
+	OrderParam      MeanQNewKinEnergy;
+	
 	OrderParam	CorrN3;
 
-//	OrderParam	SzSzCorrelation;
-//	TwoDOrderParam	SzSzCorrelationLocalMean;
-//
-//	OrderParam	DimerCorrelation;
-//	TwoDOrderParam	DimerCorrelationLocalMean;
+	OrderParam	SzSzCorrelation;
+	TwoDOrderParam	SzSzCorrelationLocalMean;
+
+	OrderParam	DimerCorrelation;
+	TwoDOrderParam	DimerCorrelationLocalMean;
 
 	OrderParam	MeanStagMag;
 	OrderParam	MeanCoreMag;
@@ -171,6 +174,12 @@ int main(int argc, char **argv)
 		OrderParamFile = WorkFolder + "/Obj_MeanKinEnergy.odat";
 		ImportObject(MeanQKinEnergy,OrderParamFile.c_str());
 
+		OrderParamFile = WorkFolder + "/Obj_MeanQNewEnergy.odat";
+		ImportObject(MeanQNewEnergy,OrderParamFile.c_str());
+		
+		OrderParamFile = WorkFolder + "/Obj_MeanNewKinEnergy.odat";
+		ImportObject(MeanQNewKinEnergy,OrderParamFile.c_str());
+		
 		OrderParamFile = WorkFolder + "/Obj_MeanPotEnergy.odat";
 		ImportObject(MeanQPotEnergy,OrderParamFile.c_str());
 
@@ -236,11 +245,11 @@ int main(int argc, char **argv)
 		OrderParamFile = WorkFolder + "/Obj_MeanLocalDimer.odat";
 		ImportObject(MeanLocalDimer,OrderParamFile.c_str());
 
-//		OrderParamFile = WorkFolder + "/Obj_CorrSzSz.odat";
-//		ImportObject(SzSzCorrelation,OrderParamFile.c_str());
-//
-//		OrderParamFile = WorkFolder + "/Obj_CorrDimer.odat";
-//		ImportObject(DimerCorrelation,OrderParamFile.c_str());
+		OrderParamFile = WorkFolder + "/Obj_CorrSzSz.odat";
+		ImportObject(SzSzCorrelation,OrderParamFile.c_str());
+
+		OrderParamFile = WorkFolder + "/Obj_CorrDimer.odat";
+		ImportObject(DimerCorrelation,OrderParamFile.c_str());
 	}
 	// >>>> MC
 	// ---> Preparations
@@ -303,6 +312,7 @@ int main(int argc, char **argv)
 //	vector<double> 	dummyLayerCorr(2*conf.N,0);
 	vector<double> 	dummyCorr(conf.N,0);
 	vector<double> 	dummyEnergies(2,0);
+	vector<double>  dummyNewEnergies(2,0);
 	vector<double> 	dummySiteMean(conf.L*conf.NbOfNeights,0);
 	vector<double>  dummyPart(conf.nx*conf.ny,0);
 	vector<double>  dummyIndex(9,0);
@@ -376,12 +386,16 @@ int main(int argc, char **argv)
 				dummyParam		= conf.GetEnergy()/(conf.N);
 				MeanEnergy.AddData(dummyParam);
 
-                conf.GetAllQEnergy_Mixed(dummyEnergies);
+        		        conf.GetAllQEnergy_Mixed(dummyEnergies);
 				MeanQEnergy.AddData(dummyEnergies[0]+dummyEnergies[1]);
-                MeanQKinEnergy.AddData(dummyEnergies[0]);
-                MeanQPotEnergy.AddData(dummyEnergies[1]);
+        		        MeanQKinEnergy.AddData(dummyEnergies[0]);
+                		MeanQPotEnergy.AddData(dummyEnergies[1]);
 
-                conf.GetKinEnergyDensity(dummyMeanKinEnergy);
+				conf.GetAllNewQEnergy_Mixed(dummyNewEnergies);
+				MeanQNewEnergy.AddData(dummyNewEnergies[0]+dummyNewEnergies[1]);				
+				MeanQNewKinEnergy.AddData(dummyNewEnergies[0]);
+
+                		conf.GetKinEnergyDensity(dummyMeanKinEnergy);
 				MeanKinEnergyDensity.AddData(dummyMeanKinEnergy);
 
 				if(conf.SimType.compare("Part")==0)
@@ -402,12 +416,12 @@ int main(int argc, char **argv)
 //					MeanComplexPhase.AddData(dummyPhase);
 				}
 
-				if(conf.SimType.compare("Moessner")==0)
-				{
-					conf.GetN3N3SpacialCorrelation(dummySpatialCorrelation,dummyLocalDensities);
-					SpatialCorrN3N3.AddData(dummySpatialCorrelation);
-					MeanLocalN3.AddData(dummyLocalDensities);
-				}
+//				if(conf.SimType.compare("Moessner")==0)
+//				{
+//					conf.GetN3N3SpacialCorrelation(dummySpatialCorrelation,dummyLocalDensities);
+//					SpatialCorrN3N3.AddData(dummySpatialCorrelation);
+//					MeanLocalN3.AddData(dummyLocalDensities);
+//				}
 
 				MeanN0.AddData(dummyNf[0]);
 				MeanN1.AddData(dummyNf[1]);
@@ -431,11 +445,11 @@ int main(int argc, char **argv)
 				MeanLocalNf.AddData(dummyMeanLocalNf);
 				MeanLocalDimer.AddData(dummyMeanLocalDimer);
 
-//				conf.GetSzSzCorrelation(dummyCorr);
-//				SzSzCorrelation.AddCorr(dummyCorr);
-//
-//				conf.GetDimerDimerCorrelation(dummyCorr);
-//				DimerCorrelation.AddCorr(dummyCorr);
+				conf.GetSzSzCorrelation(dummyCorr);
+				SzSzCorrelation.AddCorr(dummyCorr);
+
+				conf.GetDimerDimerCorrelation(dummyCorr);
+				DimerCorrelation.AddCorr(dummyCorr);
 
 				if(conf.SimType.compare("Part")==0&&conf.initCondType == 0)
 				{
@@ -514,6 +528,18 @@ int main(int argc, char **argv)
 
 				MeanQEnergy.CalculateError(OrderBunch);
 				MeanQEnergy.PrintError();
+				
+				MeanQKinEnergy.CalculateError(OrderBunch);
+				MeanQKinEnergy.PrintError();
+
+				MeanQPotEnergy.CalculateError(OrderBunch);
+				MeanQPotEnergy.PrintError();
+
+				MeanQNewEnergy.CalculateError(OrderBunch);
+				MeanQNewEnergy.PrintError();
+
+				MeanQNewKinEnergy.CalculateError(OrderBunch);
+				MeanQNewKinEnergy.PrintError();
 
 				MeanN0.CalculateError(OrderBunch);
 				MeanN0.PrintError();
@@ -594,6 +620,10 @@ int main(int argc, char **argv)
 			OrderParamFile = WorkFolder + "/Obj_MeanQEnergy.odat";
 			ExportObject(MeanQEnergy,OrderParamFile.c_str());
 
+                        MeanQNewEnergy.RaiseMeasures(UpdateInterval);
+                        OrderParamFile = WorkFolder + "/Obj_MeanQNewEnergy.odat";
+                        ExportObject(MeanQNewEnergy,OrderParamFile.c_str());
+
 			MeanQPotEnergy.RaiseMeasures(UpdateInterval);
 			OrderParamFile = WorkFolder + "/Obj_MeanPotEnergy.odat";
 			ExportObject(MeanQPotEnergy,OrderParamFile.c_str());
@@ -601,6 +631,10 @@ int main(int argc, char **argv)
 			MeanQKinEnergy.RaiseMeasures(UpdateInterval);
 			OrderParamFile = WorkFolder + "/Obj_MeanKinEnergy.odat";
 			ExportObject(MeanQKinEnergy,OrderParamFile.c_str());
+
+			MeanQNewKinEnergy.RaiseMeasures(UpdateInterval);
+			OrderParamFile = WorkFolder + "/Obj_MeanNewKinEnergy.odat";
+			ExportObject(MeanQNewKinEnergy,OrderParamFile.c_str());
 
 			MeanKinEnergyDensity.RaiseMeasures(UpdateInterval);
 			OrderParamFile = WorkFolder + "/Obj_MeanKinEnergyDensity.odat";
@@ -699,13 +733,13 @@ int main(int argc, char **argv)
 			OrderParamFile = WorkFolder + "/Obj_MeanLocalNf.odat";
 			ExportObject(MeanLocalNf,OrderParamFile.c_str());
 
-//			SzSzCorrelation.RaiseMeasures(UpdateInterval);
-//			OrderParamFile = WorkFolder + "/Obj_CorrSzSz.odat";
-//			ExportObject(SzSzCorrelation,OrderParamFile.c_str());
-//
-//			DimerCorrelation.RaiseMeasures(UpdateInterval);
-//			OrderParamFile = WorkFolder + "/Obj_CorrDimer.odat";
-//			ExportObject(DimerCorrelation,OrderParamFile.c_str());
+			SzSzCorrelation.RaiseMeasures(UpdateInterval);
+			OrderParamFile = WorkFolder + "/Obj_CorrSzSz.odat";
+			ExportObject(SzSzCorrelation,OrderParamFile.c_str());
+
+			DimerCorrelation.RaiseMeasures(UpdateInterval);
+			OrderParamFile = WorkFolder + "/Obj_CorrDimer.odat";
+			ExportObject(DimerCorrelation,OrderParamFile.c_str());
 
 			if(conf.SimType.compare("Part")==0&&(conf.initCondType == 0 || conf.initCondType == 1))
 			{
@@ -756,7 +790,6 @@ int main(int argc, char **argv)
 
 	ConvertTime(time_interval,time_interval_sec,time_interval_min,time_interval_hours,time_interval_days);
 
-	cout << "-->  V/t = " << conf.Vt << " @ " << HostName <<  ", PID " << pid << ", ended at " << ctime(&time_end)
-		 << "     Total duration : " << time_interval_days << "d " << time_interval_hours << "h " << time_interval_min << "m " << time_interval_sec << "s" << endl;
+	cout << "     Total duration : " << time_interval_days << "d " << time_interval_hours << "h " << time_interval_min << "m " << time_interval_sec << "s" << endl;
 	return 0;
 }

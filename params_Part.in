@@ -34,7 +34,7 @@
 256	= Minimal number of bins
 #
 # -> Machine options
-1       = Type of output file
+3       = Type of output file
           0 : Direct (Lab, home)        1 : Parallel (Lab --- old)
           2 : Torque (totoro, MESU)     3 : SLURM (Lab)
 4       = Total number of processors
@@ -52,5 +52,5 @@
 Ni_test
 #
 # Executable to use :
-CMC_Mixed
+CMC_Mixed_Lab
 ###############################################################################

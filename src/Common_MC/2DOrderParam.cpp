@@ -192,10 +192,6 @@ void TwoDOrderParam::SetPositions(input_params& inputPars)
 				++counter;
 			}
 		}
-		for(int iii = 0; iii < counter; ++iii)
-		{
-			cout << m_x[iii] << " " << m_y[iii] << endl;
-		}
 	}
 //	else if(inputPars.runType.compare("Moessner")==0)
 //	{

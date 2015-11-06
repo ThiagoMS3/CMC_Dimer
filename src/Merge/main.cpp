@@ -550,8 +550,10 @@ int main(int argc, char **argv)
 	MergeMC("Mag",vtFolder,WorkFolder,inputPars);
 	MergeMC("Energy",vtFolder,WorkFolder,inputPars);
 	MergeMC("QEnergy",vtFolder,WorkFolder,inputPars);
+	MergeMC("QNewEnergy",vtFolder,WorkFolder,inputPars);
 	MergeMC("PotEnergy",vtFolder,WorkFolder,inputPars);
 	MergeMC("KinEnergy",vtFolder,WorkFolder,inputPars);
+	MergeMC("NewKinEnergy",vtFolder,WorkFolder,inputPars);
 	MergeMC("N0",vtFolder,WorkFolder,inputPars);
 	MergeMC("N1",vtFolder,WorkFolder,inputPars);
 	MergeMC("N2",vtFolder,WorkFolder,inputPars);

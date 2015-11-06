@@ -85,7 +85,7 @@ inline bool GetRandomAccept(
 			    double accept
 			   )
 {
-	bernoulli_distribution<> bernoulliMC(accept);
+	random::bernoulli_distribution<> bernoulliMC(accept);
 	return bernoulliMC(rng);
 };
 

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #SBATCH --job-name=test
-#SBATCH --ntasks=21
+#SBATCH --ntasks=4
 
 #SBATCH --mem-per-cpu=2048
 

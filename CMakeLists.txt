@@ -11,7 +11,7 @@ endif()
 
 set( CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS true )
 
-set( CMAKE_CXX_FLAGS "-O0 -g -DBORDER_TYPE=0 -std=c++11")
+set( CMAKE_CXX_FLAGS "-O3 -s -DBORDER_TYPE=0 -std=gnu++11")
 
 if ( COMMAND cmake_policy )
 
@@ -29,6 +29,7 @@ endif()
 
 # inclued for Boost directory
 include_directories(${Boost_INCLUDE_DIRS})
+set ( Boost_USE_STATIC_LIBS ON)
 
 # set directories
 set ( SOURCE_DIR src)
@@ -38,9 +39,10 @@ set ( MERGE_DIR ${SOURCE_DIR}/Merge)
 set ( SET_MANUAL_DIR ${SOURCE_DIR}/CMC_Manual)
 set ( SET_MOESSNER_DIR ${SOURCE_DIR}/CMC_Moessner)
 set ( SET_PART_DIR ${SOURCE_DIR}/CMC_Part)
+set ( EXPORT_NF_DIR ${SOURCE_DIR}/CMC_ExportSites)
 
 # include for local directory
-include_directories( ${SOURCE_DIR} ${COMMON_DIR} ${CMC_MIXED_DIR} ${MERGE_DIR} ${SET_MANUAL_DIR} ${SET_MOESSNER_DIR} ${SET_PART_DIR})
+include_directories( ${SOURCE_DIR} ${COMMON_DIR} ${CMC_MIXED_DIR} ${MERGE_DIR} ${SET_MANUAL_DIR} ${SET_MOESSNER_DIR} ${SET_PART_DIR} ${EXPORT_NF_DIR} )
 
 # set source sets
 file ( GLOB COMMON_SRC "${COMMON_DIR}/*.h" "${COMMON_DIR}/*.cpp") 
@@ -49,23 +51,24 @@ file ( GLOB MERGE_SRC "${MERGE_DIR}/*.h" "${MERGE_DIR}/*.cpp")
 file ( GLOB SET_MANUAL_SRC "${MERGE_DIR}/*.h" "${MERGE_DIR}/*.cpp")
 file ( GLOB SET_MOESSNER_SRC "${SET_MOESSNER_DIR}/*.h" "${SET_MOESSNER_DIR}/*.cpp")
 file ( GLOB SET_PART_SRC "${SET_PART_DIR}/*.h" "${SET_PART_DIR}/*.cpp")
+file ( GLOB EXPORT_NF_SRC "${EXPORT_NF_DIR}/*.h" "${EXPORT_NF_DIR}/*.cpp")
 
 # Creating entries for target: intersections_2D
 # ############################
 
-add_executable( CMC_Mixed ${COMMON_SRC} ${CMC_MIXED_SRC})
+add_executable( CMC_Mixed_Faster_Lab ${COMMON_SRC} ${CMC_MIXED_SRC})
 add_executable( Merge ${COMMON_SRC} ${MERGE_SRC})
-add_executable( Set_Manual ${COMMON_SRC} ${SET_MANUAL_SRC})
-add_executable( Set_Moessner ${COMMON_SRC} ${SET_MOESSNER_SRC})
-add_executable( Set_Part ${COMMON_SRC} ${SET_PART_SRC})
+add_executable( Set_Manual_Lab ${COMMON_SRC} ${SET_MANUAL_SRC})
+add_executable( Set_Moessner_Lab ${COMMON_SRC} ${SET_MOESSNER_SRC})
+add_executable( Set_Part_Lab ${COMMON_SRC} ${SET_PART_SRC})
+add_executable( ExportNf ${COMMON_SRC} ${EXPORT_NF_SRC})
 
-# set ( LIB_DIR /opt/local/lib)
-# set ( BOOST_LIBRARIES ${LIB_DIR}/libboost_filesystem-mt.dylib ${LIB_DIR}/libboost_serialization-mt.dylib)
+set ( BOOST_STATIC_LIBRARIES /users/lptl/thiagos/softs/boost_1_53_0/boost/boostGCC/lib/libboost_serialization.a)
 
 # Link the executable to CGAL and third-party libraries
-target_link_libraries( CMC_Mixed ${BOOST_LIBRARIES} ${Boost_LIBRARIES})
-target_link_libraries( Merge ${BOOST_LIBRARIES} ${Boost_LIBRARIES})
-target_link_libraries( Set_Manual ${BOOST_LIBRARIES} ${Boost_LIBRARIES})
-target_link_libraries( Set_Moessner ${BOOST_LIBRARIES} ${Boost_LIBRARIES})
-target_link_libraries( Set_Part ${BOOST_LIBRARIES} ${Boost_LIBRARIES})
-
+target_link_libraries( CMC_Mixed_Faster_Lab ${BOOST_STATIC_LIBRARIES})
+target_link_libraries( Merge ${BOOST_STATIC_LIBRARIES})
+target_link_libraries( Set_Manual_Lab ${BOOST_STATIC_LIBRARIES})
+target_link_libraries( Set_Moessner_Lab ${BOOST_STATIC_LIBRARIES})
+target_link_libraries( Set_Part_Lab ${BOOST_STATIC_LIBRARIES})
+target_link_libraries( ExportNf ${BOOST_STATIC_LIBRARIES})

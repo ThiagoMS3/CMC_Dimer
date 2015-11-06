@@ -195,6 +195,16 @@ int main(int argc, char **argv)
 		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanKinEnergyDensity.odat";
 		ExportObject(dummy2DOrder,dummyStringBis.c_str());
 
+                dummyOrder.SetType("QNewEnergy");
+                dummyOrder.CreateFiles();
+                dummyStringBis  = "./" + vtFolder[iii] + "/Obj_MeanQNewEnergy.odat";
+                ExportObject(dummyOrder,dummyStringBis.c_str());
+
+                dummyOrder.SetType("NewKinEnergy");
+                dummyOrder.CreateFiles();
+                dummyStringBis  = "./" + vtFolder[iii] + "/Obj_MeanNewKinEnergy.odat";
+                ExportObject(dummyOrder,dummyStringBis.c_str());
+
 		// Mean N_j
 		dummyOrder.SetType("N0");
 		dummyOrder.CreateFiles();

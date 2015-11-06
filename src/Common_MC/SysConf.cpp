@@ -1169,7 +1169,7 @@ void SysConf::SetNeighboursPart()
 void SysConf::SetInitialPart()
 {
 	// Set staggered order parameter
-	bernoulli_distribution<> bernoulli(0.5);
+	random::bernoulli_distribution<> bernoulli(0.5);
 
 	int dummyNbF = 0;
 
@@ -4809,12 +4809,37 @@ double  SysConf::GetQEnergy_Mixed()
 	return energyOut;
 };
 
+double  SysConf::GetQNewEnergy_N3()
+{
+        double energyOut = GetNewKinEnergy() + GetPotEnergy_N3();
+
+        return energyOut;
+};
+ 
+double  SysConf::GetQNewEnergy_N0()
+{
+        double energyOut = GetNewKinEnergy() + GetPotEnergy_N0();
+
+        return energyOut;
+};
+
+double  SysConf::GetQNewEnergy_Mixed()
+{
+        double energyOut = GetNewKinEnergy() + GetPotEnergy_Mixed(); 
+	return energyOut;
+};
+
 void  SysConf::GetAllQEnergy_Mixed(vector<double> & dummyVec)
 {
 	dummyVec[0] = GetKinEnergy();
 	dummyVec[1] = GetPotEnergy_Mixed();
 };
 
+void  SysConf::GetAllNewQEnergy_Mixed(vector<double> & dummyVec)
+{
+	dummyVec[0] = GetNewKinEnergy();
+	dummyVec[1] = GetPotEnergy_Mixed();
+};
 
 double  SysConf::GetPotEnergy_N3()
 {
@@ -4872,6 +4897,40 @@ double  SysConf::GetKinEnergy()
 //	}
 
 	energyOut -= L/tanh(2.*Kz);
+	return energyOut;
+};
+
+double  SysConf::GetNewKinEnergy()
+{
+	double energyOut = 0;
+	double cte = 1./(N*Kz);        // !!! Kz = Delta Beta
+
+	if(N>1)
+	{
+		for(int nnn = 0; nnn < N - 1; ++nnn)
+		{
+			for(int iii = 0; iii < L; ++iii)
+			{
+				if(spinConf[idxConv(N,iii,nnn)]==-spinConf[idxConv(N,iii,nnn+1)])
+				{
+					energyOut -= cte;
+				}
+			}
+		}
+
+		for(int iii = 0; iii < L; ++iii)
+		{
+			if(spinConf[idxConv(N,iii,N-1)]==-spinConf[idxConv(N,iii,0)])
+			{
+				energyOut -= cte;
+			}
+		}
+	}
+	else
+	{
+		energyOut = 0;
+	}
+
 	return energyOut;
 };
 
