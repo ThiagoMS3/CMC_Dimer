@@ -1,17 +1,21 @@
 project( CMC_Ising )
 
-cmake_minimum_required(VERSION 2.6.2)
-if("${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}" VERSION_GREATER 2.6)
-  if("${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION}" VERSION_GREATER 2.8.3)
-    cmake_policy(VERSION 2.8.4)
-  else()
-    cmake_policy(VERSION 2.6)
+cmake_minimum_required(VERSION 2.8.8)
+if("${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}" VERSION_GREATER 2.8)
+  if("${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION}" VERSION_GREATER 2.8.8)
+    cmake_policy(VERSION 2.8.8)
   endif()
 endif()
 
 set( CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS true )
+message( ${CMAKE_CXX_COMPILER} )
 
-set( CMAKE_CXX_FLAGS "-O3 -s -DBORDER_TYPE=0 -std=gnu++11")
+set( CMAKE_CXX_FLAGS "-O3 -s -DBORDER_TYPE=0 -std=gnu++11 -fvisibility=default")
+set( COMPLEX CACHE BOOLEAN false )
+
+if( COMPLEX )
+set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCOMPLEX_PARAMS")
+endif()
 
 if ( COMMAND cmake_policy )
 
@@ -20,16 +24,13 @@ cmake_policy( SET CMP0003 NEW )
 endif()
 
 # Boost and its components
-find_package( Boost COMPONENTS serialization REQUIRED )
-
-if ( NOT Boost_FOUND )
-    message(STATUS "This project requires the Boost library, and will not be compiled.")
-    return()
-endif()
+set ( Boost_GCC_INCLUDE_DIRS /Users/breubreubreu/Execs/boost_1_60_0)
+include_directories(${Boost_GCC_INCLUDE_DIRS})
+message("Using Boost found at ${Boost_GCC_INCLUDE_DIRS}")
+message("Using the following linker command")
 
 # inclued for Boost directory
 include_directories(${Boost_INCLUDE_DIRS})
-set ( Boost_USE_STATIC_LIBS ON)
 
 # set directories
 set ( SOURCE_DIR src)
@@ -39,10 +40,9 @@ set ( MERGE_DIR ${SOURCE_DIR}/Merge)
 set ( SET_MANUAL_DIR ${SOURCE_DIR}/CMC_Manual)
 set ( SET_MOESSNER_DIR ${SOURCE_DIR}/CMC_Moessner)
 set ( SET_PART_DIR ${SOURCE_DIR}/CMC_Part)
-set ( EXPORT_NF_DIR ${SOURCE_DIR}/CMC_ExportSites)
 
 # include for local directory
-include_directories( ${SOURCE_DIR} ${COMMON_DIR} ${CMC_MIXED_DIR} ${MERGE_DIR} ${SET_MANUAL_DIR} ${SET_MOESSNER_DIR} ${SET_PART_DIR} ${EXPORT_NF_DIR} )
+include_directories( ${SOURCE_DIR} ${COMMON_DIR} ${CMC_MIXED_DIR} ${MERGE_DIR} ${SET_MANUAL_DIR} ${SET_MOESSNER_DIR} ${SET_PART_DIR})
 
 # set source sets
 file ( GLOB COMMON_SRC "${COMMON_DIR}/*.h" "${COMMON_DIR}/*.cpp") 
@@ -51,24 +51,38 @@ file ( GLOB MERGE_SRC "${MERGE_DIR}/*.h" "${MERGE_DIR}/*.cpp")
 file ( GLOB SET_MANUAL_SRC "${MERGE_DIR}/*.h" "${MERGE_DIR}/*.cpp")
 file ( GLOB SET_MOESSNER_SRC "${SET_MOESSNER_DIR}/*.h" "${SET_MOESSNER_DIR}/*.cpp")
 file ( GLOB SET_PART_SRC "${SET_PART_DIR}/*.h" "${SET_PART_DIR}/*.cpp")
-file ( GLOB EXPORT_NF_SRC "${EXPORT_NF_DIR}/*.h" "${EXPORT_NF_DIR}/*.cpp")
 
 # Creating entries for target: intersections_2D
 # ############################
+add_library( COMMON_OBJS OBJECT ${COMMON_SRC})
+set ( LIB_DIR ${Boost_GCC_INCLUDE_DIRS}/stage/lib)
+set ( BOOST_LIBRARIES ${LIB_DIR}/libboost_filesystem.a ${LIB_DIR}/libboost_serialization.a)
 
-add_executable( CMC_Mixed_Faster_Lab ${COMMON_SRC} ${CMC_MIXED_SRC})
-add_executable( Merge ${COMMON_SRC} ${MERGE_SRC})
-add_executable( Set_Manual_Lab ${COMMON_SRC} ${SET_MANUAL_SRC})
-add_executable( Set_Moessner_Lab ${COMMON_SRC} ${SET_MOESSNER_SRC})
-add_executable( Set_Part_Lab ${COMMON_SRC} ${SET_PART_SRC})
-add_executable( ExportNf ${COMMON_SRC} ${EXPORT_NF_SRC})
-
-set ( BOOST_STATIC_LIBRARIES /users/lptl/thiagos/softs/boost_1_53_0/boost/boostGCC/lib/libboost_serialization.a)
+if( COMPLEX )
+	add_executable( CMC_Mixed_CMPLX $<TARGET_OBJECTS:COMMON_OBJS> ${CMC_MIXED_SRC})
+	add_executable( Merge_CMPLX $<TARGET_OBJECTS:COMMON_OBJS> ${MERGE_SRC})
+	add_executable( Set_Manual $<TARGET_OBJECTS:COMMON_OBJS> ${SET_MANUAL_SRC})
+	add_executable( Set_Moessner_CMPLX $<TARGET_OBJECTS:COMMON_OBJS> ${SET_MOESSNER_SRC})
+	add_executable( Set_Part $<TARGET_OBJECTS:COMMON_OBJS> ${SET_PART_SRC})
+else()
+	add_executable( CMC_Mixed $<TARGET_OBJECTS:COMMON_OBJS> ${CMC_MIXED_SRC})
+	add_executable( Merge $<TARGET_OBJECTS:COMMON_OBJS> ${MERGE_SRC})
+	add_executable( Set_Manual $<TARGET_OBJECTS:COMMON_OBJS> ${SET_MANUAL_SRC})
+	add_executable( Set_Moessner $<TARGET_OBJECTS:COMMON_OBJS> ${SET_MOESSNER_SRC})
+	add_executable( Set_Part $<TARGET_OBJECTS:COMMON_OBJS> ${SET_PART_SRC})
+endif()
 
 # Link the executable to CGAL and third-party libraries
-target_link_libraries( CMC_Mixed_Faster_Lab ${BOOST_STATIC_LIBRARIES})
-target_link_libraries( Merge ${BOOST_STATIC_LIBRARIES})
-target_link_libraries( Set_Manual_Lab ${BOOST_STATIC_LIBRARIES})
-target_link_libraries( Set_Moessner_Lab ${BOOST_STATIC_LIBRARIES})
-target_link_libraries( Set_Part_Lab ${BOOST_STATIC_LIBRARIES})
-target_link_libraries( ExportNf ${BOOST_STATIC_LIBRARIES})
+if( COMPLEX )
+	target_link_libraries( CMC_Mixed_CMPLX ${BOOST_LIBRARIES} ${Boost_LIBRARIES})
+	target_link_libraries( Merge_CMPLX ${BOOST_LIBRARIES} ${Boost_LIBRARIES})
+	target_link_libraries( Set_Manual ${BOOST_LIBRARIES} ${Boost_LIBRARIES})
+	target_link_libraries( Set_Moessner_CMPLX ${BOOST_LIBRARIES} ${Boost_LIBRARIES})
+	target_link_libraries( Set_Part ${BOOST_LIBRARIES} ${Boost_LIBRARIES})
+else()
+	target_link_libraries( CMC_Mixed ${BOOST_LIBRARIES} ${Boost_LIBRARIES})
+	target_link_libraries( Merge ${BOOST_LIBRARIES} ${Boost_LIBRARIES})
+	target_link_libraries( Set_Manual ${BOOST_LIBRARIES} ${Boost_LIBRARIES})
+	target_link_libraries( Set_Moessner ${BOOST_LIBRARIES} ${Boost_LIBRARIES})
+	target_link_libraries( Set_Part ${BOOST_LIBRARIES} ${Boost_LIBRARIES})
+endif()

@@ -222,11 +222,6 @@ int main(int argc, char **argv)
 		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanStar3Index.odat";
 		ExportObject(dummyOrder,dummyStringBis.c_str());
 
-//		dummyOrder.SetType("CorrN3");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanCorrN3.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
-
 		// Mean mag stag
 		if(conf.initCondType == 0)
 		{
@@ -300,14 +295,6 @@ int main(int argc, char **argv)
 		dummy2DOrder.SetType("CorrMeanDimer");
 		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_CorrMeanDimer.odat";
 		ExportObject(dummy2DOrder,dummyStringBis.c_str());
-
-//		dummyOrder.SetType("CorrTotalSzSzLayer");
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_CorrTotalSzSzLayer.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
-//
-//		dummyOrder.SetType("CorrTotalDimerLayer");
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_CorrTotalDimerLayer.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
 
 		// >>>> For the RNG engine
 		dummyString = "./" + vtFolder[iii] + "/Obj_Engine.odat";

@@ -1,0 +1,104 @@
+reset
+nx        = 36
+ny        = 36
+
+Vt_Init   = -0.5
+dVt       = 0.05
+Vt        = Vt_Init
+III_start = 1
+III_end   = 12
+
+array_min = "1 2 3 5 6 7 12 13"
+array_max = "1 2 4 5 6 11 12 13"
+
+array_reg = "1 2 3 4 5 6 7 8"
+nb_of_reg = 7
+
+b         = 153.6
+db        = 0.02
+N         = 7680
+
+#                  1   2   3   4   5   6   7   8
+array_b_min     = "60  60  120 120 180 180 180 240"
+array_b_max     = "150 180 240 300 360 360 300 720"
+
+Id         = sprintf("variable_b_%.1f_N_%d_%d_%d",b,N,nx,ny)
+filename   = "Final_CorrSzSz.dat"
+fitoutput  = "Final_Gap_".Id.".dat"
+
+set print fitoutput
+print "# Fitted values for exponential function"
+set print fitoutput append
+print "# V/t\t cte\t cte_err\t amp\t amp_err\t gap\t gap_err"
+
+set fit errorvariables
+set fit quiet
+
+fitexp(x) = cte + amp*exp((-db*x*gap))
+do for [kkk=1:nb_of_reg] {
+
+        III_min = int(word(array_min,kkk))
+        III_max = int(word(array_max,kkk))
+        region  = int(word(array_reg,kkk))
+        
+        b_min   = int(word(array_b_min,region))
+        b_max   = int(word(array_b_max,region))
+        
+        do for [iii=III_min:III_max] {
+        
+                cte       = 0.5
+                amp       = 0.5
+                gap       = 0.5
+
+                col       = iii + 1
+                fit [x=b_min:b_max] fitexp(x) filename u 1:(column(col)/100000.) via cte, amp, gap
+                Vt        = (iii - 1)*dVt + Vt_Init
+
+                set print "-"
+                print " ---> Finished fit no. ".(col - III_min)
+                print "          cte = ", cte, "\t+- ", cte_err
+                print "          amp = ", amp, "\t+- ", amp_err
+                print "          gap = ", gap, "\t+- ", gap_err
+                print " Residual RMS = ", FIT_STDFIT
+
+                set print fitoutput append
+                print Vt, cte, cte_err, amp, amp_err, gap, gap_err, FIT_STDFIT
+        }
+}
+
+set xlabel "V/t"
+set yrange [0:*]
+#set xrange [-0.5:1]
+set xrange [Vt_Init + (III_start-2)*dVt:Vt_Init + (III_end)*dVt]
+set key below
+
+set term wxt 9 enhanced
+plot fitoutput u 1:8 w lp title "Std. Fit"
+
+set term wxt 10 enhanced
+plot fitoutput u 1:2:3 w yerrorbars lc 1 pt 1 ps 0.25 title "Constant", fitoutput u 1:2 w l ls 0 notitle
+
+set term wxt 11 enhanced
+plot fitoutput u 1:4:5 w yerrorbars lc 3 pt 1 ps 0.25 title "Amplitude", fitoutput u 1:4 w l ls 0 notitle
+
+set term wxt 12 enhanced
+plot fitoutput u 1:6:7 w yerrorbars lc 7 pt 1 ps 0.25 title "Gap", fitoutput u 1:6 w l ls 0 notitle
+
+#set term pngcairo enhanced size 640,640 font ",14"
+#set output "cte_".Id.".png"
+#set yrange [0:1]
+#set ylabel "Constant C"
+#plot fitoutput u 1:2:3 w yerrorbars lc 1 pt 1 ps 0.25 notitle, fitoutput u 1:2 w l ls 0 notitle
+
+#set term pngcairo enhanced size 640,640 font ",14"
+#set output "amp_".Id.".png"
+#set ylabel "Amplitude A"
+#plot fitoutput u 1:4:5 w yerrorbars lc 3 pt 1 ps 0.25 notitle, fitoutput u 1:4 w l ls 0 notitle
+
+#set term pngcairo enhanced size 640,640 font ",14"
+#set output "gap_".Id.".png"
+#set yrange [0:1.4]
+#set ylabel "{/Symbol D}E"
+#plot fitoutput u 1:6:7 w yerrorbars lc 7 pt 1 ps 0.25 notitle, fitoutput u 1:6 w l ls 0 notitle
+
+set term wxt 0 enhanced

@@ -245,51 +245,6 @@ int main(int argc, char **argv)
 		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanN3.odat";
 		ExportObject(dummyOrder,dummyStringBis.c_str());
 
-//		dummyOrder.SetType("Index_320");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanIndex_320.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
-//
-//		dummyOrder.SetType("Index_302");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanIndex_302.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
-//
-//		dummyOrder.SetType("Index_311");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanIndex_311.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
-//
-//		dummyOrder.SetType("Index_330");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanIndex_330.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
-//
-//		dummyOrder.SetType("Index_303");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanIndex_303.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
-//
-//		dummyOrder.SetType("Index_321");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanIndex_321.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
-//
-//		dummyOrder.SetType("Index_312");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanIndex_312.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
-//
-//		dummyOrder.SetType("Index_331");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanIndex_331.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
-//
-//		dummyOrder.SetType("Index_313");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanIndex_313.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
-
 		dummyOrder.SetType("SubA");
 		dummyOrder.CreateFiles();
 		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanSubA.odat";
@@ -305,33 +260,11 @@ int main(int argc, char **argv)
 		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanSubC.odat";
 		ExportObject(dummyOrder,dummyStringBis.c_str());
 
-//		dummyOrder.SetType("N3SecondCorr");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanN3SecondCorr.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
-//
-//		dummyOrder.SetType("N3FirstCorr");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanN3FirstCorr.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
-
-
-//		dummyOrder.SetType("CorrN3");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanCorrN3.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
-
-
 		// For the 2D order parameters
 		dummy2DOrder.Initialize(conf.L,1);
 		dummy2DOrder.SetType("MeanLocalNf");
 		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanLocalNf.odat";
 		ExportObject(dummy2DOrder,dummyStringBis.c_str());
-
-//		dummy2DOrder.Initialize(3,1);
-//		dummy2DOrder.SetType("MeanSublattice");
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanSublattice.odat";
-//		ExportObject(dummy2DOrder,dummyStringBis.c_str());
 
 		dummy2DOrder.Initialize(conf.L,conf.NbOfNeights);
 		dummy2DOrder.SetType("MeanLocalDimer");
@@ -360,31 +293,6 @@ int main(int argc, char **argv)
 		dummy2DOrder.SetType("CorrMeanDimer");
 		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_CorrMeanDimer.odat";
 		ExportObject(dummy2DOrder,dummyStringBis.c_str());
-//
-//		dummy2DOrder.Initialize(conf.L*conf.nbOfDists,1);
-//		dummy2DOrder.SetType("SpatialCorrN3N3");
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_SpatialCorrN3N3.odat";
-//		ExportObject(dummy2DOrder,dummyStringBis.c_str());
-//
-//		dummy2DOrder.Initialize(conf.L,1);
-//		dummy2DOrder.SetType("MeanLocalN3");
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanLocalN3.odat";
-//		ExportObject(dummy2DOrder,dummyStringBis.c_str());
-
-//		// >>>> Cmplx order param
-//		dummyCmplxOrderParam.SetType("MeanComplexPhase");
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanComplexPhase.odat";
-//		ExportObject(dummyCmplxOrderParam,dummyStringBis.c_str());
-//
-//		dummyOrder.SetType("MeanSymmetryParameter");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanSymmetryParameter.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
-//
-//		dummyOrder.SetType("MeanRadius");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanRadius.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
 
 		// >>>> For the RNG engine
 		dummyString = "./" + vtFolder[iii] + "/Obj_Engine.odat";

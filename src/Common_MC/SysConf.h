@@ -407,13 +407,37 @@ public:
 
 	void   SetSublatticeManual();
 	void   SetSublatticeMoessner();
-	void   GetSublatticePeriodic(vector<double>& output, vector<double> & NSiteCount);
-	void   GetSublatticeOpen(vector<double>& output, vector<double> & NSiteCount);
+//	void   GetSublatticePeriodic(vector<double>& output, vector<double> & NSiteCount);
+	void   GetSublattice(vector<double>& output, vector<double> & NSiteCount);
 
-//	void   GetSiteNf(vector<double> & NSiteCount,vector<double> & Ncount, vector<double> & MeanDimer, vector<double> & MeanSublattice,vector<double>& DimerIndex, double& firstN3Corr, double& secondN3Corr);
-	void   GetSiteNf(vector<double> & NSiteCount,vector<double> & Ncount, vector<double> & Ndimer, vector<double> & MeanSublattice,vector<double>& DimerIndex,complex<double>& complexPhase, double& realPhase);
-	void   GetSiteNf(vector<double> & NSiteCount,vector<double> & Ncount, vector<double> & Ndimer, vector<double> & MeanSublattice,vector<double>& DimerIndex);
-	void   GetSiteNf(vector<double> & NSiteCount,vector<double> & Ncount, vector<double> & Ndimer, vector<double> & MeanSublattice);
+	void   GetSiteNf(	vector<double> & NSiteCount,
+								vector<double> & Ncount,
+								vector<double> & Ndimer,
+
+								vector<double> & MeanSublattice,
+
+								vector<complex<double> >& complexPhaseVector,
+								vector<double>& realPhaseVector,
+								complex<double>& complexPhase,
+								double& realPhase);
+
+	void   GetSiteNf(	vector<double> & NSiteCount,
+						vector<double> & Ncount,
+						vector<double> & Ndimer,
+
+						vector<double> & MeanSublattice);
+
+//	void   GetSiteNf(	vector<double> & NSiteCount,vector<double> & Ncount,
+//								vector<double> & Ndimer,
+//								vector<double> & MeanSublattice,
+//								vector<complex<double> >& complexPhaseVector,
+//								vector<double>& realPhaseVector,
+//								complex<double>& complexPhase,
+//								double& realPhase);
+//
+//	void   GetSiteNf(vector<double> & NSiteCount,vector<double> & Ncount, vector<double> & Ndimer, vector<double> & MeanSublattice,vector<double>& DimerIndex,complex<double>& complexPhase, double& realPhase);
+////	void   GetSiteNf(vector<double> & NSiteCount,vector<double> & Ncount, vector<double> & Ndimer, vector<double> & MeanSublattice,vector<double>& DimerIndex);
+////	void   GetSiteNf(vector<double> & NSiteCount,vector<double> & Ncount, vector<double> & Ndimer, vector<double> & MeanSublattice);
 	void   GetSiteNf(vector<double> & NSiteCount,vector<double> & Ncount, vector<double> & Ndimer);
 									// Get mean number of dimers and mean dimer density
     double GetPlaquetteTest();

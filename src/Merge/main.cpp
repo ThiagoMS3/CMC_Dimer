@@ -374,21 +374,6 @@ void MergeTwoDMC(const char dummyType[], vector<string> &VtFolder,string& WorkFo
 	}
 	output.close();
 
-//	cout << " ---> Merging IntegAC" << endl;
-//
-//	output.open(IACFileName.c_str(),ios::trunc);
-//	output.precision(15);
-//	for(int iii = 0; iii < inputPars.VtN; ++iii)
-//	{
-//		output << inputPars.VtValues[iii] << " " << IntegACOut[iii] << endl;
-//	}
-//	output.close();
-
-//	fileName = "AC_" + dataType + ".dat";
-//	MergeAutoCorrOutput(fileName.c_str(),VtFolder,WorkFolder,inputPars);
-//
-//	fileName = "err_" + dataType +".dat";
-//	MergeBunchOutput(fileName,VtFolder,WorkFolder,inputPars,MeanObj.GetNumberOfPoints());
 };
 
 void MergeCorrMC(const char dummyType[], vector<string> &VtFolder,string& WorkFolder, input_params& inputPars,int CorrSize)
@@ -429,77 +414,6 @@ void MergeCorrMC(const char dummyType[], vector<string> &VtFolder,string& WorkFo
 	output.close();
 };
 
-//void MergeCorrMC(const char dummyType[], vector<string> &VtFolder,string& WorkFolder, input_params& inputPars,int CorrSize)
-//{
-//	string dataType = dummyType;
-//	string ObjFile = "/Obj_" + dataType +".odat";
-//	string MeanFileName = WorkFolder + "/Final_" + dataType + ".dat";
-//
-//	string fileName;
-//	cout << " >>>> Will open file " << ObjFile << endl;
-//	OrderParam CorrObj;
-//
-//	vector<vector<double> > CorrOut(inputPars.VtN,vector<double>(CorrSize,0));
-//
-//	for(int iii = 0; iii < inputPars.VtN; ++iii)
-//	{
-//		fileName = VtFolder[iii] + ObjFile;
-//		ImportObject(CorrObj,fileName.c_str());
-//		CorrObj.GetCorr(CorrOut[iii],CorrSize);
-//	}
-//
-//	cout << " ---> Merging correlations" << endl;
-//
-//	ofstream output(MeanFileName.c_str(),ios::trunc);
-//	output.precision(15);
-//	for(int jjj = 0; jjj < CorrSize; ++jjj)
-//	{
-//		output << jjj;
-//		for(int iii = 0; iii < inputPars.VtN; ++iii)
-//		{
-//			output << " " << CorrOut[iii][jjj];
-//		}
-//		output << endl;
-//	}
-//	output.close();
-//};
-//
-//void MergeVarMC(const char dummyType[], vector<string> &VtFolder,string& WorkFolder, input_params& inputPars,int CorrSize)
-//{
-//	string dataType = dummyType;
-//	string ObjFile = "/Obj_" + dataType +".odat";
-//	string MeanFileName = WorkFolder + "/Final_Var" + dataType + ".dat";
-//
-//	string fileName;
-//	cout << " >>>> Will open file " << ObjFile << endl;
-//	OrderParam CorrObj;
-//
-//	vector<vector<double> > CorrOut(inputPars.VtN,vector<double>(2*CorrSize,0));
-//
-//	for(int iii = 0; iii < inputPars.VtN; ++iii)
-//	{
-//		fileName = VtFolder[iii] + ObjFile;
-//		ImportObject(CorrObj,fileName.c_str());
-//		CorrObj.GetCorr(CorrOut[iii]);
-//	}
-//
-//	cout << " ---> Merging correlations" << endl;
-//
-//	double Var = 0;
-//	ofstream output(MeanFileName.c_str(),ios::trunc);
-//	output.precision(15);
-//	for(int jjj = 0; jjj < CorrSize; ++jjj)
-//	{
-//		output << jjj;
-//		for(int iii = 0; iii < inputPars.VtN; ++iii)
-//		{
-//			Var = CorrOut[iii][jjj] - CorrOut[iii][CorrSize]*CorrOut[iii][CorrSize+jjj];
-//			output << " " << Var;
-//		}
-//		output << endl;
-//	}
-//	output.close();
-//};
 
 // --- Main code ---
 // -----------------
@@ -526,17 +440,6 @@ int main(int argc, char **argv)
 	input_params inputPars;
 
 	ImportObject(inputPars,inputFile.c_str());
-//
-//	double L = 0;
-//	if(inputPars.runType.compare("Part")==0)
-//	{
-//		L	= inputPars.nx*inputPars.ny + inputPars.nx*inputPars.p + inputPars.ny*inputPars.p
-//				- inputPars.nx - inputPars.ny - inputPars.p +1;
-//	}
-//	else
-//	{
-//		L 	= inputPars.nx*inputPars.ny;
-//	}
 
 	// >>>> Set up file names
 	// ---> Folders
@@ -559,38 +462,27 @@ int main(int argc, char **argv)
 	MergeMC("N2",vtFolder,WorkFolder,inputPars);
 	MergeMC("N3",vtFolder,WorkFolder,inputPars);
 
-//	MergeMC("Index_320",vtFolder,WorkFolder,inputPars);
-//	MergeMC("Index_302",vtFolder,WorkFolder,inputPars);
-//	MergeMC("Index_311",vtFolder,WorkFolder,inputPars);
-//	MergeMC("Index_303",vtFolder,WorkFolder,inputPars);
-//	MergeMC("Index_330",vtFolder,WorkFolder,inputPars);
-//	MergeMC("Index_312",vtFolder,WorkFolder,inputPars);
-//	MergeMC("Index_321",vtFolder,WorkFolder,inputPars);
-//	MergeMC("Index_313",vtFolder,WorkFolder,inputPars);
-//	MergeMC("Index_331",vtFolder,WorkFolder,inputPars);
-
 	if(inputPars.runType.compare("Part")!=0)
 	{
 		MergeMC("SubA",vtFolder,WorkFolder,inputPars);
 		MergeMC("SubB",vtFolder,WorkFolder,inputPars);
 		MergeMC("SubC",vtFolder,WorkFolder,inputPars);
-//		MergeMC("N3SecondCorr",vtFolder,WorkFolder,inputPars);
-//		MergeMC("N3FirstCorr",vtFolder,WorkFolder,inputPars);
-//		MergeMC("SymmetryParameter",vtFolder,WorkFolder,inputPars);
-//		MergeMC("Radius",vtFolder,WorkFolder,inputPars);
-//		MergeCmplxMC("ComplexPhase",vtFolder,WorkFolder,inputPars);
 	}
-
-
-//	MergeTwoDMC("Sublattice",vtFolder,WorkFolder,inputPars);
-
-
-
 
 	if(inputPars.runType.compare("Moessner")==0)
 	{
 		MergeTwoDMC("SpatialCorrN3N3",vtFolder,WorkFolder,inputPars);
 		MergeTwoDMC("MeanLocalN3",vtFolder,WorkFolder,inputPars);
+
+#ifdef COMPLEX_PARAMS
+		MergeMC("SymmetryParameter",vtFolder,WorkFolder,inputPars);
+		MergeMC("Radius",vtFolder,WorkFolder,inputPars);
+		MergeCmplxMC("ComplexPhase",vtFolder,WorkFolder,inputPars);
+
+		MergeMC("SymmetryParameterPerLayer",vtFolder,WorkFolder,inputPars);
+		MergeMC("RadiusPerLayer",vtFolder,WorkFolder,inputPars);
+		MergeCmplxMC("ComplexPhasePerLayer",vtFolder,WorkFolder,inputPars);
+#endif
 	}
 
 	MergeCorrMC("SzSz",vtFolder,WorkFolder,inputPars,inputPars.N);
@@ -601,8 +493,6 @@ int main(int argc, char **argv)
 		MergeMC("StagMag",vtFolder,WorkFolder,inputPars);
 		MergeMCMultiple("MeanPart",vtFolder,WorkFolder,inputPars.nx);
 		MergeMC("ChainEnergy",vtFolder,WorkFolder,inputPars);
-//		MergeCorrMC("CorrMag",vtFolder,WorkFolder,inputPars,inputPars.nx + inputPars.p);
-//		MergeCorrMC("CorrStagMag",vtFolder,WorkFolder,inputPars,inputPars.nx + inputPars.p);
 	}
 
 	if(inputPars.ny!=1&&inputPars.runType.compare("Part")==0&&inputPars.initCondType==0)

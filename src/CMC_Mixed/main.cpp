@@ -64,27 +64,20 @@ int main(int argc, char **argv)
 	OrderParam	MeanN2;
 	OrderParam	MeanN3;
 
-//	OrderParam  MeanIndex_320;
-//	OrderParam  MeanIndex_302;
-//
-//	OrderParam  MeanIndex_311;
-//
-//	OrderParam  MeanIndex_330;
-//	OrderParam  MeanIndex_303;
-//
-//	OrderParam  MeanIndex_321;
-//	OrderParam  MeanIndex_312;
-//
-//	OrderParam  MeanIndex_331;
-//	OrderParam  MeanIndex_313;
+#ifdef COMPLEX_PARAMS
+	CmplxOrderParam	MeanComplexPhase;
+	OrderParam	MeanSymmetryParameter;
+	OrderParam	MeanRadius;
 
-//	CmplxOrderParam	MeanComplexPhase;
-//	OrderParam	MeanSymmetryParameter;
-//	OrderParam	MeanRadius;
+	CmplxOrderParam	MeanComplexPhasePerLayer;
+	OrderParam	MeanSymmetryParameterPerLayer;
+	OrderParam	MeanRadiusPerLayer;
+#endif
+
 
 	OrderParam	MeanQEnergy;
-        OrderParam	MeanQKinEnergy;
-        OrderParam	MeanQPotEnergy;
+	OrderParam	MeanQKinEnergy;
+	OrderParam	MeanQPotEnergy;
 
 	OrderParam      MeanQNewEnergy;
 	OrderParam      MeanQNewKinEnergy;
@@ -110,14 +103,10 @@ int main(int argc, char **argv)
 	TwoDOrderParam  MeanKinEnergyDensity;
 	TwoDOrderParam	SpatialCorrN3N3;
 	TwoDOrderParam	MeanLocalN3;
-//	TwoDOrderParam	MeanSublattice;
 
 	OrderParam		MeanSubA;
 	OrderParam		MeanSubB;
 	OrderParam		MeanSubC;
-
-//	TwoDOrderParam	MeanStar3;
-
 
 	/*
 	 *    > Name of the files
@@ -144,29 +133,6 @@ int main(int argc, char **argv)
 
 		OrderParamFile = WorkFolder + "/Obj_MeanN3.odat";
 		ImportObject(MeanN3,OrderParamFile.c_str());
-//
-//		OrderParamFile = WorkFolder + "/Obj_MeanIndex_320.odat";
-//		ImportObject(MeanIndex_320,OrderParamFile.c_str());
-//		OrderParamFile = WorkFolder + "/Obj_MeanIndex_302.odat";
-//		ImportObject(MeanIndex_302,OrderParamFile.c_str());
-//
-//		OrderParamFile = WorkFolder + "/Obj_MeanIndex_311.odat";
-//		ImportObject(MeanIndex_311,OrderParamFile.c_str());
-//
-//		OrderParamFile = WorkFolder + "/Obj_MeanIndex_330.odat";
-//		ImportObject(MeanIndex_330,OrderParamFile.c_str());
-//		OrderParamFile = WorkFolder + "/Obj_MeanIndex_303.odat";
-//		ImportObject(MeanIndex_303,OrderParamFile.c_str());
-//
-//		OrderParamFile = WorkFolder + "/Obj_MeanIndex_321.odat";
-//		ImportObject(MeanIndex_321,OrderParamFile.c_str());
-//		OrderParamFile = WorkFolder + "/Obj_MeanIndex_312.odat";
-//		ImportObject(MeanIndex_312,OrderParamFile.c_str());
-//
-//		OrderParamFile = WorkFolder + "/Obj_MeanIndex_331.odat";
-//		ImportObject(MeanIndex_331,OrderParamFile.c_str());
-//		OrderParamFile = WorkFolder + "/Obj_MeanIndex_313.odat";
-//		ImportObject(MeanIndex_313,OrderParamFile.c_str());
 
 		OrderParamFile = WorkFolder + "/Obj_MeanQEnergy.odat";
 		ImportObject(MeanQEnergy,OrderParamFile.c_str());
@@ -220,14 +186,26 @@ int main(int argc, char **argv)
 			OrderParamFile = WorkFolder + "/Obj_MeanSubC.odat";
 			ImportObject(MeanSubC,OrderParamFile.c_str());
 
-//			OrderParamFile = WorkFolder + "/Obj_MeanComplexPhase.odat";
-//			ImportObject(MeanComplexPhase,OrderParamFile.c_str());
-//
-//			OrderParamFile = WorkFolder + "/Obj_MeanSymmetryParameter.odat";
-//			ImportObject(MeanSymmetryParameter,OrderParamFile.c_str());
-//
-//			OrderParamFile = WorkFolder + "/Obj_MeanRadius.odat";
-//			ImportObject(MeanRadius,OrderParamFile.c_str());
+			// Complex!
+#ifdef COMPLEX_PARAMS
+			OrderParamFile = WorkFolder + "/Obj_MeanComplexPhase.odat";
+			ImportObject(MeanComplexPhase,OrderParamFile.c_str());
+
+			OrderParamFile = WorkFolder + "/Obj_MeanSymmetryParameter.odat";
+			ImportObject(MeanSymmetryParameter,OrderParamFile.c_str());
+
+			OrderParamFile = WorkFolder + "/Obj_MeanRadius.odat";
+			ImportObject(MeanRadius,OrderParamFile.c_str());
+
+			OrderParamFile = WorkFolder + "/Obj_MeanComplexPhasePerLayer.odat";
+			ImportObject(MeanComplexPhasePerLayer,OrderParamFile.c_str());
+
+			OrderParamFile = WorkFolder + "/Obj_MeanSymmetryParameterPerLayer.odat";
+			ImportObject(MeanSymmetryParameterPerLayer,OrderParamFile.c_str());
+
+			OrderParamFile = WorkFolder + "/Obj_MeanRadiusPerLayer.odat";
+			ImportObject(MeanRadiusPerLayer,OrderParamFile.c_str());
+#endif
 		}
 
 		if(conf.SimType.compare("Moessner")==0)
@@ -299,8 +277,6 @@ int main(int argc, char **argv)
 	// Some auxiliary variables
 	double 		dummyParam = 0;
 
-//	double 			dummyFirstCorr = 0;
-//	double 			dummySecondCorr = 0;
 	vector<double>	dummyCorrMag(conf.nx + conf.p,0);
 	vector<double>	dummyCorrStagMag(conf.nx + conf.p,0);
 	vector<double>	dummyNf(4,-1);
@@ -309,17 +285,22 @@ int main(int argc, char **argv)
 	vector<double>	dummyMeanKinEnergy(conf.L,0);
 	vector<double> 	dummyMeanLocalDimer(conf.L*conf.NbOfNeights,0);
 	vector<double> 	dummyMeanStar3(conf.L,0);
-//	vector<double> 	dummyLayerCorr(2*conf.N,0);
 	vector<double> 	dummyCorr(conf.N,0);
 	vector<double> 	dummyEnergies(2,0);
 	vector<double>  dummyNewEnergies(2,0);
 	vector<double> 	dummySiteMean(conf.L*conf.NbOfNeights,0);
 	vector<double>  dummyPart(conf.nx*conf.ny,0);
-	vector<double>  dummyIndex(9,0);
 
 	vector<double>  dummySpatialCorrelation(conf.L*conf.nbOfDists,0);
 	vector<double>  dummyLocalDensities(conf.L,0);
-//	complex<double> dummyPhase = 0.;
+
+#ifdef COMPLEX_PARAMS
+	complex<double> dummyPhase = 0.;
+	double			dummyRadius = 0.;
+
+	vector<complex<double> > dummyPhasePerLayer(conf.N,0.);
+	vector<double> dummyRadiusPerLayer(conf.N,0.);
+#endif
 
 	int 		OrderBunch;
 
@@ -348,16 +329,6 @@ int main(int argc, char **argv)
 	timestampOutput << " * Simulation started at " << ctime(&time_start);
 	timestampOutput.close();
 
-//	if(conf.SimType.compare("Moessner")==0&&(conf.BorderType==0||conf.BorderType==2))
-//	{
-//		conf.SetSublattice();
-//	}
-//
-//	if(conf.SimType.compare("Manual")==0)
-//	{
-//		conf.SetSublattice();
-//	}
-
 	if(conf.SimType.compare("Manual")==0)
 	{
 		conf.SetSublatticeManual();
@@ -367,7 +338,7 @@ int main(int argc, char **argv)
 		conf.SetSublatticeMoessner();
 	}
 
-	// ---> Run (your fools) !
+	// ---> Run (you fools) !
 	while(MeasureIndex < parameters.NbMeasures)
 	{
 		conf.ClusterIter_Mixed();
@@ -404,43 +375,36 @@ int main(int argc, char **argv)
 				}
 				else
 				{
-					conf.GetSiteNf(dummyMeanLocalNf,dummyNf,dummyMeanLocalDimer,dummySublattice,dummyIndex);
-//					conf.GetSiteNf(dummyMeanLocalNf,dummyNf,dummyMeanLocalDimer,dummySublattice,dummyIndex,dummyPhase,dummyParam);
+
+#ifdef COMPLEX_PARAMS
+					conf.GetSiteNf(dummyMeanLocalNf,dummyNf,dummyMeanLocalDimer,dummySublattice,
+									dummyPhasePerLayer,dummyRadiusPerLayer,dummyPhase,dummyRadius);
+#else
+					conf.GetSiteNf(dummyMeanLocalNf,dummyNf,dummyMeanLocalDimer,dummySublattice);
+#endif
 
 					MeanSubA.AddData(dummySublattice[0]);
 					MeanSubB.AddData(dummySublattice[1]);
 					MeanSubC.AddData(dummySublattice[2]);
 
-//					MeanSymmetryParameter.AddData(dummyParam);
-//					MeanRadius.AddData(abs(dummyPhase));
-//					MeanComplexPhase.AddData(dummyPhase);
-				}
+#ifdef COMPLEX_PARAMS
+					MeanSymmetryParameter.AddData(dummyRadius);
+					MeanRadius.AddData(abs(dummyPhase));
+					MeanComplexPhase.AddData(dummyPhase);
 
-//				if(conf.SimType.compare("Moessner")==0)
-//				{
-//					conf.GetN3N3SpacialCorrelation(dummySpatialCorrelation,dummyLocalDensities);
-//					SpatialCorrN3N3.AddData(dummySpatialCorrelation);
-//					MeanLocalN3.AddData(dummyLocalDensities);
-//				}
+					for(int nnn = 0; nnn < conf.N; ++nnn)
+					{
+						MeanSymmetryParameterPerLayer.AddData(dummyRadiusPerLayer[nnn]);
+						MeanRadiusPerLayer.AddData(abs(dummyPhasePerLayer[nnn]));
+						MeanComplexPhasePerLayer.AddData(dummyPhasePerLayer[nnn]);
+					}
+#endif
+				}
 
 				MeanN0.AddData(dummyNf[0]);
 				MeanN1.AddData(dummyNf[1]);
 				MeanN2.AddData(dummyNf[2]);
 				MeanN3.AddData(dummyNf[3]);
-
-//				MeanIndex_320.AddData(dummyIndex[0]);
-//				MeanIndex_302.AddData(dummyIndex[1]);
-//
-//				MeanIndex_311.AddData(dummyIndex[2]);
-//
-//				MeanIndex_330.AddData(dummyIndex[3]);
-//				MeanIndex_303.AddData(dummyIndex[4]);
-//
-//				MeanIndex_321.AddData(dummyIndex[5]);
-//				MeanIndex_312.AddData(dummyIndex[6]);
-//
-//				MeanIndex_331.AddData(dummyIndex[7]);
-//				MeanIndex_313.AddData(dummyIndex[8]);
 
 				MeanLocalNf.AddData(dummyMeanLocalNf);
 				MeanLocalDimer.AddData(dummyMeanLocalDimer);
@@ -477,8 +441,6 @@ int main(int argc, char **argv)
 					conf.GetMeanPart(dummyPart);
 					MeanPart.AddData(dummyPart);
 				}
-
-
 			}
 
 			++MeasureIndex;
@@ -552,29 +514,6 @@ int main(int argc, char **argv)
 
 				MeanN3.CalculateError(OrderBunch);
 				MeanN3.PrintError();
-	//
-	//			MeanIndex_320.CalculateError(OrderBunch);
-	//			MeanIndex_320.PrintError();
-	//			MeanIndex_302.CalculateError(OrderBunch);
-	//			MeanIndex_302.PrintError();
-	//
-	//			MeanIndex_311.CalculateError(OrderBunch);
-	//			MeanIndex_311.PrintError();
-	//
-	//			MeanIndex_330.CalculateError(OrderBunch);
-	//			MeanIndex_330.PrintError();
-	//			MeanIndex_303.CalculateError(OrderBunch);
-	//			MeanIndex_303.PrintError();
-	//
-	//			MeanIndex_321.CalculateError(OrderBunch);
-	//			MeanIndex_321.PrintError();
-	//			MeanIndex_312.CalculateError(OrderBunch);
-	//			MeanIndex_312.PrintError();
-	//
-	//			MeanIndex_331.CalculateError(OrderBunch);
-	//			MeanIndex_331.PrintError();
-	//			MeanIndex_313.CalculateError(OrderBunch);
-	//			MeanIndex_313.PrintError();
 
 				if(conf.SimType.compare("Part")!=0)
 				{
@@ -584,11 +523,6 @@ int main(int argc, char **argv)
 					MeanSubB.PrintError();
 					MeanSubC.CalculateError(OrderBunch);
 					MeanSubC.PrintError();
-//					MeanSymmetryParameter.CalculateError(OrderBunch);
-//					MeanSymmetryParameter.PrintError();
-//
-//					MeanRadius.CalculateError(OrderBunch);
-//					MeanRadius.PrintError();
 				}
 
 				if(conf.SimType.compare("Part")==0&&conf.initCondType == 0)
@@ -656,39 +590,7 @@ int main(int argc, char **argv)
 			OrderParamFile = WorkFolder + "/Obj_MeanN3.odat";
 			ExportObject(MeanN3,OrderParamFile.c_str());
 
-//			MeanIndex_320.RaiseMeasures(UpdateInterval);
-//			OrderParamFile = WorkFolder + "/Obj_MeanIndex_320.odat";
-//			ExportObject(MeanIndex_320,OrderParamFile.c_str());
-//			MeanIndex_302.RaiseMeasures(UpdateInterval);
-//			OrderParamFile = WorkFolder + "/Obj_MeanIndex_302.odat";
-//			ExportObject(MeanIndex_302,OrderParamFile.c_str());
-//
-//			MeanIndex_311.RaiseMeasures(UpdateInterval);
-//			OrderParamFile = WorkFolder + "/Obj_MeanIndex_311.odat";
-//			ExportObject(MeanIndex_311,OrderParamFile.c_str());
-//
-//			MeanIndex_330.RaiseMeasures(UpdateInterval);
-//			OrderParamFile = WorkFolder + "/Obj_MeanIndex_330.odat";
-//			ExportObject(MeanIndex_330,OrderParamFile.c_str());
-//			MeanIndex_303.RaiseMeasures(UpdateInterval);
-//			OrderParamFile = WorkFolder + "/Obj_MeanIndex_303.odat";
-//			ExportObject(MeanIndex_303,OrderParamFile.c_str());
-//
-//			MeanIndex_321.RaiseMeasures(UpdateInterval);
-//			OrderParamFile = WorkFolder + "/Obj_MeanIndex_321.odat";
-//			ExportObject(MeanIndex_321,OrderParamFile.c_str());
-//			MeanIndex_312.RaiseMeasures(UpdateInterval);
-//			OrderParamFile = WorkFolder + "/Obj_MeanIndex_312.odat";
-//			ExportObject(MeanIndex_312,OrderParamFile.c_str());
-//
-//			MeanIndex_331.RaiseMeasures(UpdateInterval);
-//			OrderParamFile = WorkFolder + "/Obj_MeanIndex_331.odat";
-//			ExportObject(MeanIndex_331,OrderParamFile.c_str());
-//			MeanIndex_313.RaiseMeasures(UpdateInterval);
-//			OrderParamFile = WorkFolder + "/Obj_MeanIndex_313.odat";
-//			ExportObject(MeanIndex_313,OrderParamFile.c_str());
-
-			if(conf.SimType.compare("Moessner")!=0)
+			if(conf.SimType.compare("Moessner")==0)
 			{
 				SpatialCorrN3N3.RaiseMeasures(UpdateInterval);
 				OrderParamFile = WorkFolder +  "/Obj_SpatialCorrN3N3.odat";
@@ -697,6 +599,32 @@ int main(int argc, char **argv)
 				MeanLocalN3.RaiseMeasures(UpdateInterval);
 				OrderParamFile = WorkFolder +  "/Obj_MeanLocalN3.odat";
 				ExportObject(MeanLocalN3,OrderParamFile.c_str());
+
+#ifdef COMPLEX_PARAMS
+				MeanSymmetryParameter.RaiseMeasures(UpdateInterval);
+				OrderParamFile = WorkFolder + "/Obj_MeanSymmetryParameter.odat";
+				ExportObject(MeanSymmetryParameter,OrderParamFile.c_str());
+
+				MeanRadius.RaiseMeasures(UpdateInterval);
+				OrderParamFile = WorkFolder + "/Obj_MeanRadius.odat";
+				ExportObject(MeanRadius,OrderParamFile.c_str());
+
+				MeanComplexPhase.RaiseMeasures(UpdateInterval);
+				OrderParamFile = WorkFolder +  "/Obj_MeanComplexPhase.odat";
+				ExportObject(MeanComplexPhase,OrderParamFile.c_str());
+
+				MeanSymmetryParameterPerLayer.RaiseMeasures(conf.N*UpdateInterval);
+				OrderParamFile = WorkFolder + "/Obj_MeanSymmetryParameterPerLayer.odat";
+				ExportObject(MeanSymmetryParameterPerLayer,OrderParamFile.c_str());
+
+				MeanRadiusPerLayer.RaiseMeasures(conf.N*UpdateInterval);
+				OrderParamFile = WorkFolder + "/Obj_MeanRadiusPerLayer.odat";
+				ExportObject(MeanRadiusPerLayer,OrderParamFile.c_str());
+
+				MeanComplexPhasePerLayer.RaiseMeasures(conf.N*UpdateInterval);
+				OrderParamFile = WorkFolder +  "/Obj_MeanComplexPhasePerLayer.odat";
+				ExportObject(MeanComplexPhasePerLayer,OrderParamFile.c_str());
+#endif
 			}
 
 			if(conf.SimType.compare("Part")!=0)
@@ -710,19 +638,6 @@ int main(int argc, char **argv)
 				MeanSubC.RaiseMeasures(UpdateInterval);
 				OrderParamFile = WorkFolder + "/Obj_MeanSubC.odat";
 				ExportObject(MeanSubC,OrderParamFile.c_str());
-
-//				MeanSymmetryParameter.RaiseMeasures(UpdateInterval);
-//				OrderParamFile = WorkFolder + "/Obj_MeanSymmetryParameter.odat";
-//				ExportObject(MeanSymmetryParameter,OrderParamFile.c_str());
-//
-//				MeanRadius.RaiseMeasures(UpdateInterval);
-//				OrderParamFile = WorkFolder + "/Obj_MeanRadius.odat";
-//				ExportObject(MeanRadius,OrderParamFile.c_str());
-//
-//				MeanComplexPhase.RaiseMeasures(UpdateInterval);
-//				OrderParamFile = WorkFolder +  "/Obj_MeanComplexPhase.odat";
-//				ExportObject(MeanComplexPhase,OrderParamFile.c_str());
-
 			}
 
 			MeanLocalDimer.RaiseMeasures(UpdateInterval);

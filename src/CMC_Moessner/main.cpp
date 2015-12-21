@@ -36,7 +36,12 @@ int main(int argc, char **argv)
 	input_params input;
 	int pid;
 	string filename;		// Input file
-
+	string MergeType;
+#ifdef COMPLEX_PARAMS
+	MergeType = "./Merge_CMPLX ";
+#else
+	MergeType = "./Merge ";
+#endif
 	// Get file and folder
 	if(argc == 1)
 	{
@@ -195,15 +200,15 @@ int main(int argc, char **argv)
 		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanKinEnergyDensity.odat";
 		ExportObject(dummy2DOrder,dummyStringBis.c_str());
 
-                dummyOrder.SetType("QNewEnergy");
-                dummyOrder.CreateFiles();
-                dummyStringBis  = "./" + vtFolder[iii] + "/Obj_MeanQNewEnergy.odat";
-                ExportObject(dummyOrder,dummyStringBis.c_str());
+		dummyOrder.SetType("QNewEnergy");
+		dummyOrder.CreateFiles();
+		dummyStringBis  = "./" + vtFolder[iii] + "/Obj_MeanQNewEnergy.odat";
+		ExportObject(dummyOrder,dummyStringBis.c_str());
 
-                dummyOrder.SetType("NewKinEnergy");
-                dummyOrder.CreateFiles();
-                dummyStringBis  = "./" + vtFolder[iii] + "/Obj_MeanNewKinEnergy.odat";
-                ExportObject(dummyOrder,dummyStringBis.c_str());
+		dummyOrder.SetType("NewKinEnergy");
+		dummyOrder.CreateFiles();
+		dummyStringBis  = "./" + vtFolder[iii] + "/Obj_MeanNewKinEnergy.odat";
+		ExportObject(dummyOrder,dummyStringBis.c_str());
 
 		// Mean N_j
 		dummyOrder.SetType("N0");
@@ -226,60 +231,6 @@ int main(int argc, char **argv)
 		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanN3.odat";
 		ExportObject(dummyOrder,dummyStringBis.c_str());
 
-//		dummyOrder.SetType("PlaquetteIndex");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanPlaquetteIndex.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
-//
-//		dummyOrder.SetType("Star3Index");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanStar3Index.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
-
-//		dummyOrder.SetType("Index_320");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanIndex_320.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
-//
-//		dummyOrder.SetType("Index_302");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanIndex_302.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
-//
-//		dummyOrder.SetType("Index_311");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanIndex_311.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
-//
-//		dummyOrder.SetType("Index_330");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanIndex_330.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
-//
-//		dummyOrder.SetType("Index_303");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanIndex_303.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
-//
-//		dummyOrder.SetType("Index_321");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanIndex_321.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
-//
-//		dummyOrder.SetType("Index_312");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanIndex_312.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
-//
-//		dummyOrder.SetType("Index_331");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanIndex_331.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
-//
-//		dummyOrder.SetType("Index_313");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanIndex_313.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
 
 		dummyOrder.SetType("SubA");
 		dummyOrder.CreateFiles();
@@ -296,31 +247,11 @@ int main(int argc, char **argv)
 		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanSubC.odat";
 		ExportObject(dummyOrder,dummyStringBis.c_str());
 
-//		dummyOrder.SetType("N3SecondCorr");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanN3SecondCorr.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
-//
-//		dummyOrder.SetType("N3FirstCorr");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanN3FirstCorr.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
-
-//		dummyOrder.SetType("CorrN3");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanCorrN3.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
-
 		// For the 2D order parameters
 		dummy2DOrder.Initialize(conf.L,1);
 		dummy2DOrder.SetType("MeanLocalNf");
 		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanLocalNf.odat";
 		ExportObject(dummy2DOrder,dummyStringBis.c_str());
-
-//		dummy2DOrder.Initialize(3,1);
-//		dummy2DOrder.SetType("MeanSublattice");
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanSublattice.odat";
-//		ExportObject(dummy2DOrder,dummyStringBis.c_str());
 
 		dummy2DOrder.Initialize(conf.L,conf.NbOfNeights);
 		dummy2DOrder.SetType("MeanLocalDimer");
@@ -361,19 +292,36 @@ int main(int argc, char **argv)
 		ExportObject(dummy2DOrder,dummyStringBis.c_str());
 
 		// >>>> Cmplx order param
-//		dummyCmplxOrderParam.SetType("MeanComplexPhase");
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanComplexPhase.odat";
-//		ExportObject(dummyCmplxOrderParam,dummyStringBis.c_str());
-//
-//		dummyOrder.SetType("MeanSymmetryParameter");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanSymmetryParameter.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
-//
-//		dummyOrder.SetType("MeanRadius");
-//		dummyOrder.CreateFiles();
-//		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanRadius.odat";
-//		ExportObject(dummyOrder,dummyStringBis.c_str());
+#ifdef COMPLEX_PARAMS
+		dummyCmplxOrderParam.SetType("MeanComplexPhase");
+		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanComplexPhase.odat";
+		ExportObject(dummyCmplxOrderParam,dummyStringBis.c_str());
+
+		dummyOrder.SetType("MeanSymmetryParameter");
+		dummyOrder.CreateFiles();
+		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanSymmetryParameter.odat";
+		ExportObject(dummyOrder,dummyStringBis.c_str());
+
+		dummyOrder.SetType("MeanRadius");
+		dummyOrder.CreateFiles();
+		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanRadius.odat";
+		ExportObject(dummyOrder,dummyStringBis.c_str());
+
+
+		dummyCmplxOrderParam.SetType("MeanComplexPhasePerLayer");
+		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanComplexPhasePerLayer.odat";
+		ExportObject(dummyCmplxOrderParam,dummyStringBis.c_str());
+
+		dummyOrder.SetType("MeanSymmetryParameterPerLayer");
+		dummyOrder.CreateFiles();
+		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanSymmetryParameterPerLayer.odat";
+		ExportObject(dummyOrder,dummyStringBis.c_str());
+
+		dummyOrder.SetType("MeanRadiusPerLayer");
+		dummyOrder.CreateFiles();
+		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_MeanRadiusPerLayer.odat";
+		ExportObject(dummyOrder,dummyStringBis.c_str());
+#endif
 
 		// >>>> For the RNG engine
 		dummyString = "./" + vtFolder[iii] + "/Obj_Engine.odat";
@@ -441,7 +389,7 @@ int main(int argc, char **argv)
 
 		ofstream scriptFile(scriptFilename.c_str(),ios::trunc);
 		scriptFile << ". " << commandsFilename << endl;
-		scriptFile << "./Merge " << outFolder << "/Obj_InputParams.odat" << " " << outFolder <<  endl;
+		scriptFile << MergeType << outFolder << "/Obj_InputParams.odat" << " " << outFolder <<  endl;
 		scriptFile.close();
 	}
 	if(input.compType==1)
@@ -453,7 +401,7 @@ int main(int argc, char **argv)
 
 		ofstream scriptFile(scriptFilename.c_str(),ios::trunc);
 		scriptFile << "parallel -j " << input.numProc << " < " << commandsFilename << endl;
-		scriptFile << "./Merge " << outFolder << "/Obj_InputParams.odat" << " " << outFolder <<  endl;
+		scriptFile << MergeType << outFolder << "/Obj_InputParams.odat" << " " << outFolder <<  endl;
 		scriptFile.close();
 	}
 	if(input.compType==2)
@@ -467,7 +415,7 @@ int main(int argc, char **argv)
 		cout << "     Merge script       : " << mergeScript << endl;
 
 		ofstream mergeFile(mergeScript.c_str(),ios::trunc);
-		mergeFile << "./Merge " << outFolder << "/Obj_InputParams.odat" << " " << outFolder <<  endl;
+		mergeFile << MergeType << outFolder << "/Obj_InputParams.odat" << " " << outFolder <<  endl;
 		mergeFile.close();
 	}
 	if(input.compType==3)
@@ -505,7 +453,7 @@ int main(int argc, char **argv)
 		ofstream mergeFile(mergeScript.c_str(),ios::trunc);
 
 		scriptFile << "$parallel < " << commandsFilename << endl;
-		mergeFile << "./Merge " << outFolder << "/Obj_InputParams.odat" << " " << outFolder <<  endl;
+		mergeFile << MergeType << outFolder << "/Obj_InputParams.odat" << " " << outFolder <<  endl;
 
 		scriptFile.close();
 		mergeFile.close();

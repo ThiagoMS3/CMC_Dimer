@@ -6,6 +6,8 @@
 #include <set>
 #include <algorithm>
 
+typedef unsigned int uint;
+
 // Basic math
 #include <cmath>
 
