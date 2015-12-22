@@ -8,7 +8,6 @@ if("${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}" VERSION_GREATER 2.8)
 endif()
 
 set( CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS true )
-message( ${CMAKE_CXX_COMPILER} )
 
 set( CMAKE_CXX_FLAGS "-O3 -s -DBORDER_TYPE=0 -std=gnu++11 -fvisibility=default")
 set( COMPLEX CACHE BOOLEAN false )
@@ -24,13 +23,29 @@ cmake_policy( SET CMP0003 NEW )
 endif()
 
 # Boost and its components
-set ( Boost_GCC_INCLUDE_DIRS /Users/breubreubreu/Execs/boost_1_60_0)
-include_directories(${Boost_GCC_INCLUDE_DIRS})
-message("Using Boost found at ${Boost_GCC_INCLUDE_DIRS}")
-message("Using the following linker command")
+set ( HOME_BOOST true )
+set ( LAB_BOOST false )
 
-# inclued for Boost directory
+if ( HOME_BOOST )
+  message( STATUS "Using HOME Boost" )
+  set ( Boost_INCLUDE_DIRS /Users/breubreubreu/Execs/boost_1_60_0)
+  set ( Boost_LIB_DIR ${Boost_INCLUDE_DIRS}/stage/lib )
+elseif( LAB_BOOST )
+  message( STATUS "Using LAB Boost" )
+  set ( Boost_INCLUDE_DIRS /users/invites/thiagos/softs/boost_1_53_0/boost/boostGCC/include )
+  set ( Boost_LIB_DIR /users/invites/thiagos/softs/boost_1_53_0/boost/boostGCC/lib )
+else()
+  message( STATUS "Using root Boost" )
+  find_package( Boost COMPONENTS serialization REQUIRED )
+
+  if ( NOT Boost_FOUND )
+     message(STATUS "This project requires the Boost library, and will not be compiled.")
+     return()
+  endif()
+endif()
+
 include_directories(${Boost_INCLUDE_DIRS})
+message(STATUS "Using Boost found at ${Boost_INCLUDE_DIRS}")
 
 # set directories
 set ( SOURCE_DIR src)
@@ -55,8 +70,7 @@ file ( GLOB SET_PART_SRC "${SET_PART_DIR}/*.h" "${SET_PART_DIR}/*.cpp")
 # Creating entries for target: intersections_2D
 # ############################
 add_library( COMMON_OBJS OBJECT ${COMMON_SRC})
-set ( LIB_DIR ${Boost_GCC_INCLUDE_DIRS}/stage/lib)
-set ( BOOST_LIBRARIES ${LIB_DIR}/libboost_filesystem.a ${LIB_DIR}/libboost_serialization.a)
+set ( BOOST_LIBRARIES ${Boost_LIB_DIR}/libboost_filesystem.a ${Boost_LIB_DIR}/libboost_serialization.a)
 
 if( COMPLEX )
 	add_executable( CMC_Mixed_CMPLX $<TARGET_OBJECTS:COMMON_OBJS> ${CMC_MIXED_SRC})

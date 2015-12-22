@@ -600,67 +600,6 @@ void SysConf::SetSublatticeMoessner()
 	}
 }
 
-//void SysConf::GetSublatticePeriodic(vector<double>& output, vector<double> & NSiteCount)
-//{
-//	int idx = -1;
-//	for(uint iii = 0; iii < output.size();++iii)
-//	{
-//		output[iii] = 0;
-//	}
-//
-//	for(int iii = 0; iii < ny/3; ++iii)
-//	{
-//		for(int jjj = 0; jjj < nx/3; ++jjj)
-//		{
-//			// First line
-//			// A
-//			idx = idxConv(nx,3*iii,3*jjj);
-//			output[0] += NSiteCount[idx];
-//
-//			// B
-//			idx = idxConv(nx,3*iii,3*jjj+1);
-//			output[1] += NSiteCount[idx];
-//
-//			// C
-//			idx = idxConv(nx,3*iii,3*jjj+2);
-//			output[2] += NSiteCount[idx];
-//
-//			// Second line
-//			// C
-//			idx = idxConv(nx,3*iii+1,3*jjj);
-//			output[2] += NSiteCount[idx];
-//
-//			// A
-//			idx = idxConv(nx,3*iii+1,3*jjj+1);
-//			output[0] += NSiteCount[idx];
-//
-//			// B
-//			idx = idxConv(nx,3*iii+1,3*jjj+2);
-//			output[1] += NSiteCount[idx];
-//
-//			// Third line
-//			// B
-//			idx = idxConv(nx,3*iii+2,3*jjj);
-//			output[1] += NSiteCount[idx];
-//
-//			// C
-//			idx = idxConv(nx,3*iii+2,3*jjj+1);
-//			output[2] += NSiteCount[idx];
-//
-//			// A
-//			idx = idxConv(nx,3*iii+2,3*jjj+2);
-//			output[0] += NSiteCount[idx];
-//		}
-//	}
-//
-//	for(uint iii = 0; iii < output.size();++iii)
-//	{
-//		output[iii] = 3.*output[iii]/L;
-//	}
-//
-//// 	sort(output.begin(), output.end());
-//}
-//
 void SysConf::GetSublattice(vector<double>& output, vector<double> & NSiteCount)
 {
 
@@ -742,201 +681,6 @@ void SysConf::GetSublattice(vector<double>& output, vector<double> & NSiteCount)
 		}
 	}
 }
-
-/*
- 	void SysConf::GetSiteNf(vector<double> & NSiteCount,
- 							vector<double> & Ncount,
- 							vector<double> & Ndimer,
-
- 							vector<double> & MeanSublattice,
-
- 							vector<double>& DimerIndex,
-
- 							complex<double>& complexPhase,
- 							double& realPhase)
-
-	void SysConf::GetSiteNf(vector<double> & NSiteCount,
-							vector<double> & Ncount,
-							vector<double> & Ndimer,
-
-							vector<double> & MeanSublattice,
-
-							vector<complex<double> >& complexPhaseVector,
-							vector<double>& realPhaseVector,
-
-							complex<double>& complexPhase,
-							double& realPhase)
-
-	void SysConf::GetSiteNf(vector<double> & NSiteCount,
-							vector<double> & Ncount,
-							vector<double> & Ndimer,
-
-							vector<double> & MeanSublattice,
-							vector<double>& DimerIndex)
-
-	void SysConf::GetSiteNf(vector<double> & NSiteCount,
-							vector<double> & Ncount,
-							vector<double> & Ndimer,
-
-							vector<double> & MeanSublattice)
-
-	void SysConf::GetSiteNf(vector<double> & NSiteCount,
-							vector<double> & Ncount,
-							vector<double> & Ndimer)
-
- */
-//void SysConf::GetSiteNf(vector<double> & NSiteCount,vector<double> & Ncount,vector<double> & Ndimer,vector<double> & MeanSublattice,vector<double>& DimerIndex,complex<double>& complexPhase,double& realPhase)
-//{
-//	// ---> Dimensions
-//	//      Ncount		: 4
-//	//	NSiteCount	: L
-//	//	MeanDimer	: L * NbOfNeights
-//
-//	int test_Ncount = 0;
-//	int N3Count = 0;
-//
-//	int index = 0;
-//
-//	int spinPos = 0;
-//	int neighPos = 0;
-//
-//	int spinValue = 0;
-//	int neighValue = 0;
-//
-//	// Reset vectors
-//	for(int iii = 0; iii < 4; ++iii)
-//	{
-//		Ncount[iii] = 0;
-//	}
-//
-//	for(int iii = 0; iii < L; ++iii)
-//	{
-//		NSiteCount[iii] = 0;
-//		for(int jjj = 0; jjj < NbOfNeights; ++jjj)
-//		{
-//			Ndimer[idxConv(NbOfNeights,iii,jjj)] = 0;
-//		}
-//	}
-//
-//	for(int nnn = 0; nnn < N; ++nnn)
-//	{
-//		for(int lll = 0; lll < L; ++lll)
-//		{
-//			// Count the number of dimers
-//			test_Ncount	= 0;
-//			spinPos 	= idxConv(N,lll,nnn);
-//			spinValue 	= (int)spinConf[spinPos];
-//
-//			if(spinValue!=0)
-//			{
-//				for(int iii = 0; iii < NbOfNeights;++iii)
-//				{
-//					index 		= idxConv(NbOfNeights,lll,iii);
-//					neighPos	= idxConv(N,neighboursTable[index],nnn);
-//
-//				#if BORDER_TYPE == 4
-//				// ANTI-PERIODIC BORDERS
-//					neighValue	= weightTable[index]*(int)spinConf[neighPos];
-//				#else
-//					neighValue	= (int)spinConf[neighPos];
-//				#endif
-//
-//					if(neighValue==spinValue)
-//					{
-//						++test_Ncount;
-//						Ndimer[index] += 1./N;
-//					}
-//				}
-//
-//				DimerDensityProfile[spinPos] = test_Ncount;
-//				Ncount[test_Ncount] 	+= 1./N;
-//				NSiteCount[lll]		+= (double)test_Ncount/N;
-//
-//				if(test_Ncount==3)
-//				{
-//					N3_Map[N3Count] = spinPos;
-//					++N3Count;
-//				}
-//			}
-//		}
-//	}
-//
-//	if(SimType.compare("Moessner")==0||SimType.compare("Manual")==0)
-//	{
-//		GetSublatticeOpen(MeanSublattice,NSiteCount);
-//	}
-//
-//	// Calculate the plaquette and columnar indexes
-//	int Sub0Value = 0;
-//	int Sub1Value = 0;
-//	int spinNeigh1 = 0;
-//	int spinNeigh0 = 0;
-//	int index0 = 0;
-//	int index1 = 0;
-//
-//	complexPhase = 0.;
-//	int chosenSublattice = -1;
-//
-//	for(uint iii = 0; iii < DimerIndex.size(); ++iii)
-//	{
-//		DimerIndex[iii] = 0;
-//	}
-//
-//	int lll = 0;
-//	int nnn = 0;
-//	for(int iii = 0; iii < N3Count; ++iii)
-//	{
-//		spinPos = N3_Map[iii];
-//		lll = spinPos/N;
-//		nnn = spinPos%N;
-//
-//		// Complex phase
-//		chosenSublattice = SublatticePositions[lll];
-//		complexPhase += Jindex[chosenSublattice];
-//
-//
-//		// Indexes
-//		for(int jjj = 0; jjj < NbOfNeights/2; ++jjj)
-//		{
-//			index0 		= idxConv(NbOfNeights,lll,2*jjj);
-//			index1 		= idxConv(NbOfNeights,lll,(2*jjj+1));
-//
-//			spinNeigh0  = idxConv(N,neighboursTable[index0],nnn);
-//			spinNeigh1  = idxConv(N,neighboursTable[index1],nnn);
-//
-//			Sub0Value   = DimerDensityProfile[spinNeigh0];
-//			Sub1Value   = DimerDensityProfile[spinNeigh1];
-//
-//			// DimerIndex[0] = 3,2,0
-//			// DimerIndex[1] = 3,1,1
-//			// DimerIndex[2] = 3,3,0
-//			// DimerIndex[3] = 3,2,1
-//			// DimerIndex[4] = 3,3,1
-//
-//			DimerIndex[0]  += (Sub0Value==2)*(Sub1Value==0);
-//			DimerIndex[1]  += (Sub0Value==0)*(Sub1Value==2);
-//
-//			DimerIndex[2]  += (Sub0Value==1)*(Sub1Value==1);
-//
-//			DimerIndex[3]  += (Sub0Value==3)*(Sub1Value==0);
-//			DimerIndex[4]  += (Sub0Value==0)*(Sub1Value==3);
-//
-//			DimerIndex[5]  += (Sub0Value==2)*(Sub1Value==1);
-//			DimerIndex[6]  += (Sub0Value==1)*(Sub1Value==2);
-//
-//			DimerIndex[7]  += (Sub0Value==3)*(Sub1Value==1);
-//			DimerIndex[8]  += (Sub0Value==1)*(Sub1Value==3);
-//		}
-//	}
-//
-//	complexPhase = complexPhase/((double)N*L);
-//	realPhase = cos(3*arg(complexPhase));
-//
-//	for(uint iii = 0; iii < DimerIndex.size(); ++iii)
-//	{
-//		DimerIndex[iii] = 2*DimerIndex[iii]/(N3Count*NbOfNeights);
-//	}
-//};
 
 void SysConf::GetSiteNf(vector<double> & NSiteCount,vector<double> & Ncount,vector<double> & Ndimer,vector<double> & MeanSublattice,vector<complex<double> >& complexPhaseVector,vector<double>& realPhaseVector,complex<double>& complexPhase,double& realPhase)
 {
@@ -1143,220 +887,6 @@ void SysConf::GetSiteNf(vector<double> & NSiteCount,vector<double> & Ncount,vect
 	}
 }
 
-//void SysConf::GetSiteNf(vector<double> & NSiteCount,vector<double> & Ncount, vector<double> & Ndimer, vector<double> & MeanSublattice, vector<double>& DimerIndex)
-//{
-//	// ---> Dimensions
-//	//      Ncount		: 4
-//	//	NSiteCount	: L
-//	//	MeanDimer	: L * NbOfNeights
-//
-//	int test_Ncount = 0;
-//	int N3Count = 0;
-//
-//	int index = 0;
-//
-//	int spinPos = 0;
-//	int neighPos = 0;
-//
-//	int spinValue = 0;
-//	int neighValue = 0;
-//
-//	// Reset vectors
-//	for(int iii = 0; iii < 4; ++iii)
-//	{
-//		Ncount[iii] = 0;
-//	}
-//
-//	for(int iii = 0; iii < L; ++iii)
-//	{
-//		NSiteCount[iii] = 0;
-//		for(int jjj = 0; jjj < NbOfNeights; ++jjj)
-//		{
-//			Ndimer[idxConv(NbOfNeights,iii,jjj)] = 0;
-//		}
-//	}
-//
-//	for(int nnn = 0; nnn < N; ++nnn)
-//	{
-//		for(int lll = 0; lll < L; ++lll)
-//		{
-//			// Count the number of dimers
-//			test_Ncount	= 0;
-//			spinPos 	= idxConv(N,lll,nnn);
-//			spinValue 	= (int)spinConf[spinPos];
-//
-//			if(spinValue!=0)
-//			{
-//				for(int iii = 0; iii < NbOfNeights;++iii)
-//				{
-//					index 		= idxConv(NbOfNeights,lll,iii);
-//					neighPos	= idxConv(N,neighboursTable[index],nnn);
-//
-//				#if BORDER_TYPE == 4
-//				// ANTI-PERIODIC BORDERS
-//					neighValue	= weightTable[index]*(int)spinConf[neighPos];
-//				#else
-//					neighValue	= (int)spinConf[neighPos];
-//				#endif
-//
-//					if(neighValue==spinValue)
-//					{
-//						++test_Ncount;
-//						Ndimer[index] += 1./N;
-//					}
-//				}
-//
-//				DimerDensityProfile[spinPos] = test_Ncount;
-//				Ncount[test_Ncount] 	+= 1./N;
-//				NSiteCount[lll]		+= (double)test_Ncount/N;
-//
-//				if(test_Ncount==3)
-//				{
-//					N3_Map[N3Count] = spinPos;
-//					++N3Count;
-//				}
-//			}
-//
-//		}
-//	}
-//
-//	if(SimType.compare("Moessner")==0||SimType.compare("Manual")==0)
-//	{
-//		GetSublatticeOpen(MeanSublattice,NSiteCount);
-//	}
-//
-//	// Calculate the plaquette and columnar indexes
-//	int Sub0Value = 0;
-//	int Sub1Value = 0;
-//	int spinNeigh1 = 0;
-//	int spinNeigh0 = 0;
-//	int index0 = 0;
-//	int index1 = 0;
-//
-//	for(uint iii = 0; iii < DimerIndex.size(); ++iii)
-//		DimerIndex[iii] = 0;
-//
-//	int lll = 0;
-//	int nnn = 0;
-//	for(int iii = 0; iii < N3Count; ++iii)
-//	{
-//		spinPos = N3_Map[iii];
-//		lll = spinPos/N;
-//		nnn = spinPos%N;
-//
-//		for(int jjj = 0; jjj < NbOfNeights/2; ++jjj)
-//		{
-//			index0 		= idxConv(NbOfNeights,lll,2*jjj);
-//			index1 		= idxConv(NbOfNeights,lll,(2*jjj+1));
-//
-//			spinNeigh0  = idxConv(N,neighboursTable[index0],nnn);
-//			spinNeigh1  = idxConv(N,neighboursTable[index1],nnn);
-//
-//			Sub0Value   = DimerDensityProfile[spinNeigh0];
-//			Sub1Value   = DimerDensityProfile[spinNeigh1];
-//
-//			// DimerIndex[0] = 3,2,0
-//			// DimerIndex[1] = 3,1,1
-//			// DimerIndex[2] = 3,3,0
-//			// DimerIndex[3] = 3,2,1
-//			// DimerIndex[4] = 3,3,1
-//
-//			DimerIndex[0]  += (Sub0Value==2)*(Sub1Value==0);
-//			DimerIndex[1]  += (Sub0Value==0)*(Sub1Value==2);
-//
-//			DimerIndex[2]  += (Sub0Value==1)*(Sub1Value==1);
-//
-//			DimerIndex[3]  += (Sub0Value==3)*(Sub1Value==0);
-//			DimerIndex[4]  += (Sub0Value==0)*(Sub1Value==3);
-//
-//			DimerIndex[5]  += (Sub0Value==2)*(Sub1Value==1);
-//			DimerIndex[6]  += (Sub0Value==1)*(Sub1Value==2);
-//
-//			DimerIndex[7]  += (Sub0Value==3)*(Sub1Value==1);
-//			DimerIndex[8]  += (Sub0Value==1)*(Sub1Value==3);
-//		}
-//	}
-//
-//	for(uint iii = 0; iii < DimerIndex.size(); ++iii)
-//	{
-//		DimerIndex[iii] = 2*DimerIndex[iii]/(N3Count*NbOfNeights);
-//	}
-//}
-//
-//void SysConf::GetSiteNf(vector<double> & NSiteCount,vector<double> & Ncount, vector<double> & Ndimer, vector<double> & MeanSublattice)
-//{
-//	// ---> Dimensions
-//	//      Ncount		: 4
-//	//	NSiteCount	: L
-//	//	MeanDimer	: L * NbOfNeights
-//
-//	int test_Ncount = 0;
-//
-//	int index = 0;
-//
-//	int spinPos = 0;
-//	int neighPos = 0;
-//
-//	int spinValue = 0;
-//	int neighValue = 0;
-//
-//	// Reset vectors
-//	for(int iii = 0; iii < 4; ++iii)
-//		Ncount[iii] = 0;
-//
-//	for(int iii = 0; iii < L; ++iii)
-//	{
-//		NSiteCount[iii] = 0;
-//		for(int jjj = 0; jjj < NbOfNeights; ++jjj)
-//		{
-//			Ndimer[idxConv(NbOfNeights,iii,jjj)] = 0;
-//		}
-//	}
-//
-//	for(int nnn = 0; nnn < N; ++nnn)
-//	{
-//		for(int lll = 0; lll < L; ++lll)
-//		{
-//			// Count the number of dimers
-//			test_Ncount	= 0;
-//			spinPos 	= idxConv(N,lll,nnn);
-//			spinValue 	= (int)spinConf[spinPos];
-//
-//			if(spinValue!=0)
-//			{
-//				for(int iii = 0; iii < NbOfNeights;++iii)
-//				{
-//					index 		= idxConv(NbOfNeights,lll,iii);
-//					neighPos	= idxConv(N,neighboursTable[index],nnn);
-//
-//				#if BORDER_TYPE == 4
-//				// ANTI-PERIODIC BORDERS
-//					neighValue	= weightTable[index]*(int)spinConf[neighPos];
-//				#else
-//					neighValue	= (int)spinConf[neighPos];
-//				#endif
-//
-//					if(neighValue==spinValue)
-//					{
-//						++test_Ncount;
-//						Ndimer[index] += 1./N;
-//					}
-//				}
-//
-//				DimerDensityProfile[spinPos] = test_Ncount;
-//				Ncount[test_Ncount] 	+= 1./N;
-//				NSiteCount[lll]		+= (double)test_Ncount/N;
-//			}
-//
-//		}
-//	}
-//
-//	if(SimType.compare("Moessner")==0||SimType.compare("Manual")==0)
-//	{
-//		GetSublatticeOpen(MeanSublattice,NSiteCount);
-//	}
-//}
-//
 void SysConf::GetSiteNf(vector<double> & NSiteCount,vector<double> & Ncount, vector<double> & Ndimer)
 {
 	// ---> Dimensions
@@ -1594,6 +1124,58 @@ void	SysConf::GetDimerDimerCorrelation(vector<double>& corr)
 	for(int nnn = 0; nnn < N; ++nnn)
 	{
 		corr[nnn] 		= corr[nnn]/(NbOfNeights*L);
+	}
+}
+
+void	SysConf::GetSxSxCorrelation(vector<double>& corr)
+{
+	//   corr[nnn] 		= Sum_iii [ <A_(iii,0) A_(iii,nnn*dB)>_iii ]
+	//   siteMean[iii]	= Sum_nnn [ <A_(iii,nnn)>_nnn ]
+
+	for(int nnn = 0; nnn < N; ++nnn)
+	{
+		corr[nnn] = 0;
+	}
+
+	char firstDummy = 0;
+	char secondDummy = 0;
+
+	double firstSx = 0;
+	double layerSx = 0;
+
+	for(int iii = 0; iii < L; ++iii)
+	{
+		firstDummy = spinConf[idxConv(N,iii,N/2)];
+		secondDummy = -spinConf[idxConv(N,iii,N/2+1)];
+		firstSx = ( firstDummy == secondDummy );
+
+		// Cover *most* of the layers
+		for(int nnn = 0; nnn < N/2; ++nnn)
+		{
+			firstDummy = spinConf[idxConv(N,iii,nnn)];
+			secondDummy = -spinConf[idxConv(N,iii,nnn+1)];
+			layerSx = ( firstDummy == secondDummy );
+			corr[N/2+nnn] += firstSx*layerSx;
+		}
+
+		for(int nnn = N/2; nnn < N - 1; ++nnn)
+		{
+			firstDummy = spinConf[idxConv(N,iii,nnn)];
+			secondDummy = -spinConf[idxConv(N,iii,nnn+1)];
+			layerSx = ( firstDummy == secondDummy );
+			corr[nnn-N/2] += firstSx*layerSx;
+		}
+
+		// Deal with boundary case : nnn = N - 1
+		firstDummy = spinConf[idxConv(N,iii,N - 1)];
+		secondDummy = -spinConf[idxConv(N,iii,0)];
+		layerSx = ( firstDummy == secondDummy );
+		corr[N/2 - 1] += firstSx*layerSx;
+	}
+
+	for(int nnn = 0; nnn < N; ++nnn)
+	{
+		corr[nnn] 		= corr[nnn]/(L*Kz*Kz); // Kz = DBeta
 	}
 }
 

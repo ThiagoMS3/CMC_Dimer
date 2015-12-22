@@ -87,6 +87,9 @@ int main(int argc, char **argv)
 	OrderParam	SzSzCorrelation;
 	TwoDOrderParam	SzSzCorrelationLocalMean;
 
+	OrderParam	SxSxCorrelation;
+	TwoDOrderParam	SxSxCorrelationLocalMean;
+
 	OrderParam	DimerCorrelation;
 	TwoDOrderParam	DimerCorrelationLocalMean;
 
@@ -225,6 +228,9 @@ int main(int argc, char **argv)
 
 		OrderParamFile = WorkFolder + "/Obj_CorrSzSz.odat";
 		ImportObject(SzSzCorrelation,OrderParamFile.c_str());
+
+		OrderParamFile = WorkFolder + "/Obj_CorrSxSx.odat";
+		ImportObject(SxSxCorrelation,OrderParamFile.c_str());
 
 		OrderParamFile = WorkFolder + "/Obj_CorrDimer.odat";
 		ImportObject(DimerCorrelation,OrderParamFile.c_str());
@@ -414,6 +420,9 @@ int main(int argc, char **argv)
 
 				conf.GetDimerDimerCorrelation(dummyCorr);
 				DimerCorrelation.AddCorr(dummyCorr);
+
+				conf.GetSxSxCorrelation(dummyCorr);
+				SxSxCorrelation.AddCorr(dummyCorr);
 
 				if(conf.SimType.compare("Part")==0&&conf.initCondType == 0)
 				{
@@ -651,6 +660,10 @@ int main(int argc, char **argv)
 			SzSzCorrelation.RaiseMeasures(UpdateInterval);
 			OrderParamFile = WorkFolder + "/Obj_CorrSzSz.odat";
 			ExportObject(SzSzCorrelation,OrderParamFile.c_str());
+
+			SxSxCorrelation.RaiseMeasures(UpdateInterval);
+			OrderParamFile = WorkFolder + "/Obj_CorrSxSx.odat";
+			ExportObject(SxSxCorrelation,OrderParamFile.c_str());
 
 			DimerCorrelation.RaiseMeasures(UpdateInterval);
 			OrderParamFile = WorkFolder + "/Obj_CorrDimer.odat";

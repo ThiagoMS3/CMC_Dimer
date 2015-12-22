@@ -281,6 +281,10 @@ int main(int argc, char **argv)
 		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_CorrSzSz.odat";
 		ExportObject(dummyOrder,dummyStringBis.c_str());
 
+		dummyOrder.SetType("CorrSxSx");
+		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_CorrSxSx.odat";
+		ExportObject(dummyOrder,dummyStringBis.c_str());
+
 		dummy2DOrder.SetType("CorrMeanSz");
 		dummyStringBis	= "./" + vtFolder[iii] + "/Obj_CorrMeanSzSz.odat";
 		ExportObject(dummy2DOrder,dummyStringBis.c_str());

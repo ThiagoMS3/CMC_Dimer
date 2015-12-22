@@ -427,35 +427,15 @@ public:
 
 						vector<double> & MeanSublattice);
 
-//	void   GetSiteNf(	vector<double> & NSiteCount,vector<double> & Ncount,
-//								vector<double> & Ndimer,
-//								vector<double> & MeanSublattice,
-//								vector<complex<double> >& complexPhaseVector,
-//								vector<double>& realPhaseVector,
-//								complex<double>& complexPhase,
-//								double& realPhase);
-//
-//	void   GetSiteNf(vector<double> & NSiteCount,vector<double> & Ncount, vector<double> & Ndimer, vector<double> & MeanSublattice,vector<double>& DimerIndex,complex<double>& complexPhase, double& realPhase);
-////	void   GetSiteNf(vector<double> & NSiteCount,vector<double> & Ncount, vector<double> & Ndimer, vector<double> & MeanSublattice,vector<double>& DimerIndex);
-////	void   GetSiteNf(vector<double> & NSiteCount,vector<double> & Ncount, vector<double> & Ndimer, vector<double> & MeanSublattice);
-	void   GetSiteNf(vector<double> & NSiteCount,vector<double> & Ncount, vector<double> & Ndimer);
-									// Get mean number of dimers and mean dimer density
+	void   GetSiteNf(	vector<double> & NSiteCount,
+						vector<double> & Ncount,
+						vector<double> & Ndimer);
+
     double GetPlaquetteTest();
 
-
-
-	// ---> Correlations
-	// >>>> Time - time
-
-//	// > S^z S^z
-//	void   GetSzSzLayerCorrelation(int pos,vector<double> & corr);
-//	void   GetTotalSzSzLayerCorrelation(vector<double> & corr);
-//
-//	// > Dimer
-//	void   GetDimerCorrelationTime(int pos,vector<double> & corr);
-//	void   GetTotalDimerCorrelationTime(vector<double> & corr);
 	void   GetDimerDimerCorrelation(vector<double> & corr);
 	void   GetSzSzCorrelation(vector<double> & corr);
+	void   GetSxSxCorrelation(vector<double>& corr);
 
 	// >>>> Site - site
 	void   GetN3Correlation(double &corr, vector<double> &Star3Network);

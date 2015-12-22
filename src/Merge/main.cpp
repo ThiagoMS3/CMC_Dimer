@@ -486,6 +486,7 @@ int main(int argc, char **argv)
 	}
 
 	MergeCorrMC("SzSz",vtFolder,WorkFolder,inputPars,inputPars.N);
+	MergeCorrMC("SxSx",vtFolder,WorkFolder,inputPars,inputPars.N);
 	MergeCorrMC("Dimer",vtFolder,WorkFolder,inputPars,inputPars.N);
 
 	if(inputPars.ny==1)
