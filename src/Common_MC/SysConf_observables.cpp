@@ -1031,6 +1031,182 @@ void	SysConf::GetN3N3SpacialCorrelation(vector<double>& N3SpatialCorrelation, ve
 	}
 }
 
+//void	SysConf::GetSzSzCorrelation(vector<double>& corr)
+//{
+//	//   corr[nnn] 		= Sum_iii [ <A_(iii,0) A_(iii,nnn*dB)>_iii ]
+//	//   siteMean[iii]	= Sum_nnn [ <A_(iii,nnn)>_nnn ]
+//
+//	for(int nnn = 0; nnn < N; ++nnn)
+//	{
+//		corr[nnn] = 0;
+//	}
+//
+//	double firstSpin = 0;
+//
+//	for(int iii = 0; iii < L; ++iii)
+//	{
+//		firstSpin = spinConf[idxConv(N,iii,N/2)];
+//		for(int nnn = 0; nnn < N/2; ++nnn)
+//		{
+//			corr[N/2+nnn] += firstSpin*spinConf[idxConv(N,iii,nnn)];
+//		}
+//
+//		for(int nnn = N/2; nnn < N; ++nnn)
+//		{
+//			corr[nnn-N/2] 	+= firstSpin*spinConf[idxConv(N,iii,nnn)];
+//		}
+//	}
+//
+//	for(int nnn = 0; nnn < N; ++nnn)
+//	{
+//		corr[nnn] 		= corr[nnn]/L;
+//	}
+//}
+//
+//void	SysConf::GetDimerDimerCorrelation(vector<double>& corr)
+//{
+//	//   corr[nnn] 		= Sum_iii [ <A_(iii,0) A_(iii,nnn*dB)>_iii ]
+//	//   siteMean[iii]	= Sum_nnn [ <A_(iii,nnn)>_nnn ]
+//
+//	for(int nnn = 0; nnn < N; ++nnn)
+//	{
+//		corr[nnn] = 0;
+//	}
+//
+//	double 	firstSpin = 0;
+//	double 	dimer = 0;
+//	double 	firstDimer = 0;
+//	int 	posNeigh = 0;
+//	int 	index = 0;
+//
+//		for(int iii = 0; iii < L; ++iii)
+//		{
+//			firstSpin = spinConf[idxConv(N,iii,N/2)];
+//
+//			for(int jjj = 0; jjj < NbOfNeights; ++jjj)
+//			{
+//				index = idxConv(NbOfNeights,iii,jjj);
+//				posNeigh  = neighboursTable[index];
+//
+//
+//			#if BORDER_TYPE == 4
+//			// ANTI-PERIODIC BORDERS
+//				firstDimer = (firstSpin*weightTable[index]*spinConf[idxConv(N,posNeigh,N/2)] + 1)/2.;
+//			#else
+//				firstDimer = (firstSpin*spinConf[idxConv(N,posNeigh,N/2)] + 1)/2.;
+//			#endif
+//
+//
+//				for(int nnn = 0; nnn < N/2; ++nnn)
+//				{
+//				#if BORDER_TYPE == 4
+//				// ANTI-PERIODIC BORDERS
+//					dimer = (spinConf[idxConv(N,iii,nnn)]*weightTable[index]*spinConf[idxConv(N,posNeigh,nnn)] + 1)/2.;
+//				#else
+//					dimer = (spinConf[idxConv(N,iii,nnn)]*spinConf[idxConv(N,posNeigh,nnn)] + 1)/2.;
+//				#endif
+//					corr[N/2+nnn] += firstDimer*dimer;
+//				}
+//
+//				for(int nnn = N/2; nnn < N; ++nnn)
+//				{
+//				#if BORDER_TYPE == 4
+//				// ANTI-PERIODIC BORDERS
+//					dimer = (spinConf[idxConv(N,iii,nnn)]*weightTable[index]*spinConf[idxConv(N,posNeigh,nnn)] + 1)/2.;
+//				#else
+//					dimer = (spinConf[idxConv(N,iii,nnn)]*spinConf[idxConv(N,posNeigh,nnn)] + 1)/2.;
+//				#endif
+//					corr[nnn-N/2] 	+= firstDimer*dimer;
+//				}
+//			}
+//		}
+//
+//	for(int nnn = 0; nnn < N; ++nnn)
+//	{
+//		corr[nnn] 		= corr[nnn]/(NbOfNeights*L);
+//	}
+//}
+//
+//void	SysConf::GetSxSxCorrelation(vector<double>& corr)
+//{
+//	//   corr[nnn] 		= Sum_iii [ <A_(iii,0) A_(iii,nnn*dB)>_iii ]
+//	//   siteMean[iii]	= Sum_nnn [ <A_(iii,nnn)>_nnn ]
+//
+//	for(int nnn = 0; nnn < N; ++nnn)
+//	{
+//		corr[nnn] = 0;
+//	}
+//
+//	char firstDummy = 0;
+//	char secondDummy = 0;
+//
+//	int firstSx = 0;
+//	int layerSx = 0;
+//
+//	for(int iii = 0; iii < L; ++iii)
+//	{
+//		firstDummy = spinConf[idxConv(N,iii,N/2)];
+//		secondDummy = -spinConf[idxConv(N,iii,N/2+1)];
+//		if( firstDummy == secondDummy )
+//		{
+//			firstSx = 1;
+//		}
+//		else
+//		{
+//			firstSx = 0;
+//		}
+//
+//		// Cover *most* of the layers
+//		for(int nnn = 0; nnn < N/2; ++nnn)
+//		{
+//			firstDummy = spinConf[idxConv(N,iii,nnn)];
+//			secondDummy = -spinConf[idxConv(N,iii,nnn+1)];
+//			if( firstDummy == secondDummy )
+//			{
+//				layerSx = 1;
+//			}
+//			else
+//			{
+//				layerSx = 0;
+//			}
+//			corr[N/2+nnn] += firstSx*layerSx;
+//		}
+//
+//		for(int nnn = N/2; nnn < N - 1; ++nnn)
+//		{
+//			firstDummy = spinConf[idxConv(N,iii,nnn)];
+//			secondDummy = -spinConf[idxConv(N,iii,nnn+1)];
+//			if( firstDummy == secondDummy )
+//			{
+//				layerSx = 1;
+//			}
+//			else
+//			{
+//				layerSx = 0;
+//			}
+//			corr[nnn-N/2] += firstSx*layerSx;
+//		}
+//
+//		// Deal with boundary case : nnn = N - 1
+//		firstDummy = spinConf[idxConv(N,iii,N - 1)];
+//		secondDummy = -spinConf[idxConv(N,iii,0)];
+//		if( firstDummy == secondDummy )
+//		{
+//			layerSx = 1;
+//		}
+//		else
+//		{
+//			layerSx = 0;
+//		}
+//		corr[N/2 - 1] += firstSx*layerSx;
+//	}
+//
+//	for(int nnn = 0; nnn < N; ++nnn)
+//	{
+//		corr[nnn] 		= corr[nnn]/(L*Kz*Kz); // Kz = DBeta
+//	}
+//}
+
 void	SysConf::GetSzSzCorrelation(vector<double>& corr)
 {
 	//   corr[nnn] 		= Sum_iii [ <A_(iii,0) A_(iii,nnn*dB)>_iii ]
@@ -1043,23 +1219,29 @@ void	SysConf::GetSzSzCorrelation(vector<double>& corr)
 
 	double firstSpin = 0;
 
+	int nStep = 60;
+	int deltaN = N/nStep;
 	for(int iii = 0; iii < L; ++iii)
 	{
-		firstSpin = spinConf[idxConv(N,iii,N/2)];
-		for(int nnn = 0; nnn < N/2; ++nnn)
+		for(int mmm = 0; mmm < N; mmm += deltaN)
 		{
-			corr[N/2+nnn] += firstSpin*spinConf[idxConv(N,iii,nnn)];
+			firstSpin = spinConf[idxConv(N,iii,mmm)];
+			for(int nnn = 0; nnn < mmm; ++nnn)
+			{
+				corr[N - mmm+nnn] += firstSpin*spinConf[idxConv(N,iii,nnn)];
+			}
+
+			for(int nnn = mmm; nnn < N; ++nnn)
+			{
+				corr[nnn-mmm] 	+= firstSpin*spinConf[idxConv(N,iii,nnn)];
+			}
 		}
 
-		for(int nnn = N/2; nnn < N; ++nnn)
-		{
-			corr[nnn-N/2] 	+= firstSpin*spinConf[idxConv(N,iii,nnn)];
-		}
 	}
 
 	for(int nnn = 0; nnn < N; ++nnn)
 	{
-		corr[nnn] 		= corr[nnn]/L;
+		corr[nnn] 		= corr[nnn]/(nStep*L);
 	}
 }
 
@@ -1079,9 +1261,13 @@ void	SysConf::GetDimerDimerCorrelation(vector<double>& corr)
 	int 	posNeigh = 0;
 	int 	index = 0;
 
-		for(int iii = 0; iii < L; ++iii)
+	int nStep = 60;
+	int deltaN = N/nStep;
+	for(int iii = 0; iii < L; ++iii)
+	{
+		for(int mmm = 0; mmm < N; mmm += deltaN)
 		{
-			firstSpin = spinConf[idxConv(N,iii,N/2)];
+			firstSpin = spinConf[idxConv(N,iii,mmm)];
 
 			for(int jjj = 0; jjj < NbOfNeights; ++jjj)
 			{
@@ -1091,13 +1277,13 @@ void	SysConf::GetDimerDimerCorrelation(vector<double>& corr)
 
 			#if BORDER_TYPE == 4
 			// ANTI-PERIODIC BORDERS
-				firstDimer = (firstSpin*weightTable[index]*spinConf[idxConv(N,posNeigh,N/2)] + 1)/2.;
+				firstDimer = (firstSpin*weightTable[index]*spinConf[idxConv(N,posNeigh,mmm)] + 1)/2.;
 			#else
-				firstDimer = (firstSpin*spinConf[idxConv(N,posNeigh,N/2)] + 1)/2.;
+				firstDimer = (firstSpin*spinConf[idxConv(N,posNeigh,mmm)] + 1)/2.;
 			#endif
 
 
-				for(int nnn = 0; nnn < N/2; ++nnn)
+				for(int nnn = 0; nnn < mmm; ++nnn)
 				{
 				#if BORDER_TYPE == 4
 				// ANTI-PERIODIC BORDERS
@@ -1105,10 +1291,10 @@ void	SysConf::GetDimerDimerCorrelation(vector<double>& corr)
 				#else
 					dimer = (spinConf[idxConv(N,iii,nnn)]*spinConf[idxConv(N,posNeigh,nnn)] + 1)/2.;
 				#endif
-					corr[N/2+nnn] += firstDimer*dimer;
+					corr[N - mmm+nnn] += firstDimer*dimer;
 				}
 
-				for(int nnn = N/2; nnn < N; ++nnn)
+				for(int nnn = mmm; nnn < N; ++nnn)
 				{
 				#if BORDER_TYPE == 4
 				// ANTI-PERIODIC BORDERS
@@ -1116,14 +1302,15 @@ void	SysConf::GetDimerDimerCorrelation(vector<double>& corr)
 				#else
 					dimer = (spinConf[idxConv(N,iii,nnn)]*spinConf[idxConv(N,posNeigh,nnn)] + 1)/2.;
 				#endif
-					corr[nnn-N/2] 	+= firstDimer*dimer;
+					corr[nnn-mmm] 	+= firstDimer*dimer;
 				}
 			}
 		}
+	}
 
 	for(int nnn = 0; nnn < N; ++nnn)
 	{
-		corr[nnn] 		= corr[nnn]/(NbOfNeights*L);
+		corr[nnn] 		= corr[nnn]/(nStep*NbOfNeights*L);
 	}
 }
 
@@ -1140,42 +1327,54 @@ void	SysConf::GetSxSxCorrelation(vector<double>& corr)
 	char firstDummy = 0;
 	char secondDummy = 0;
 
-	double firstSx = 0;
-	double layerSx = 0;
+	int firstSx = 0;
+	int layerSx = 0;
 
+	int nStep = 60;
+	int deltaN = N/nStep;
 	for(int iii = 0; iii < L; ++iii)
 	{
-		firstDummy = spinConf[idxConv(N,iii,N/2)];
-		secondDummy = -spinConf[idxConv(N,iii,N/2+1)];
-		firstSx = ( firstDummy == secondDummy );
-
-		// Cover *most* of the layers
-		for(int nnn = 0; nnn < N/2; ++nnn)
+		for(int mmm = 0; mmm < N; mmm += deltaN)
 		{
-			firstDummy = spinConf[idxConv(N,iii,nnn)];
-			secondDummy = -spinConf[idxConv(N,iii,nnn+1)];
-			layerSx = ( firstDummy == secondDummy );
-			corr[N/2+nnn] += firstSx*layerSx;
-		}
+			firstDummy = spinConf[idxConv(N,iii,mmm)];
+			if(mmm != N - 1)
+			{
+				secondDummy = -spinConf[idxConv(N,iii,mmm+1)];
+			}
+			else
+			{
+				secondDummy = -spinConf[idxConv(N,iii,0)];
+			}
+			firstSx = ( firstDummy == secondDummy );
 
-		for(int nnn = N/2; nnn < N - 1; ++nnn)
-		{
-			firstDummy = spinConf[idxConv(N,iii,nnn)];
-			secondDummy = -spinConf[idxConv(N,iii,nnn+1)];
-			layerSx = ( firstDummy == secondDummy );
-			corr[nnn-N/2] += firstSx*layerSx;
-		}
+			// Cover *most* of the layers
+			for(int nnn = 0; nnn < mmm; ++nnn)
+			{
+				firstDummy = spinConf[idxConv(N,iii,nnn)];
+				secondDummy = -spinConf[idxConv(N,iii,nnn+1)];
+				layerSx = ( firstDummy == secondDummy );
+				corr[N - mmm+nnn] += firstSx*layerSx;
+			}
 
-		// Deal with boundary case : nnn = N - 1
-		firstDummy = spinConf[idxConv(N,iii,N - 1)];
-		secondDummy = -spinConf[idxConv(N,iii,0)];
-		layerSx = ( firstDummy == secondDummy );
-		corr[N/2 - 1] += firstSx*layerSx;
+			for(int nnn = mmm; nnn < N - 1; ++nnn)
+			{
+				firstDummy = spinConf[idxConv(N,iii,nnn)];
+				secondDummy = -spinConf[idxConv(N,iii,nnn+1)];
+				layerSx = ( firstDummy == secondDummy );
+				corr[nnn-mmm] += firstSx*layerSx;
+			}
+
+			// Deal with boundary case : nnn = N - 1
+			firstDummy = spinConf[idxConv(N,iii,N - 1)];
+			secondDummy = -spinConf[idxConv(N,iii,0)];
+			layerSx = ( firstDummy == secondDummy );
+			corr[N - 1 - mmm] += firstSx*layerSx;
+		}
 	}
 
 	for(int nnn = 0; nnn < N; ++nnn)
 	{
-		corr[nnn] 		= corr[nnn]/(L*Kz*Kz); // Kz = DBeta
+		corr[nnn] 		= corr[nnn]/(nStep*L*Kz*Kz); // Kz = DBeta
 	}
 }
 
