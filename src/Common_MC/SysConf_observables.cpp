@@ -1330,8 +1330,11 @@ void	SysConf::GetSxSxCorrelation(vector<double>& corr)
 	int firstSx = 0;
 	int layerSx = 0;
 
-	int nStep = 60;
+	int nStep = 30;
 	int deltaN = N/nStep;
+
+	int pbcnnn = -1;
+
 	for(int iii = 0; iii < L; ++iii)
 	{
 		for(int mmm = 0; mmm < N; mmm += deltaN)
@@ -1347,28 +1350,74 @@ void	SysConf::GetSxSxCorrelation(vector<double>& corr)
 			}
 			firstSx = ( firstDummy == secondDummy );
 
-			// Cover *most* of the layers
-			for(int nnn = 0; nnn < mmm; ++nnn)
+			// mmm is the correlation shift
+
+			// -> Dummy zero layer
+			corr[0] += 1;
+
+			// -> Calculate it up to nnn = N - 2
+			for(int nnn = 1; nnn < N - 1 - mmm; ++nnn)
 			{
-				firstDummy = spinConf[idxConv(N,iii,nnn)];
-				secondDummy = -spinConf[idxConv(N,iii,nnn+1)];
+				firstDummy = spinConf[idxConv(N,iii,mmm+nnn)];
+				secondDummy = -spinConf[idxConv(N,iii,mmm+nnn+1)];
+
 				layerSx = ( firstDummy == secondDummy );
-				corr[N - mmm+nnn] += firstSx*layerSx;
+				corr[nnn] += firstSx*layerSx;
 			}
 
-			for(int nnn = mmm; nnn < N - 1; ++nnn)
+			// -> Consider the periodic boundary condition for nnn + mmm = N - 1
+			if(mmm != N-1)
 			{
-				firstDummy = spinConf[idxConv(N,iii,nnn)];
-				secondDummy = -spinConf[idxConv(N,iii,nnn+1)];
+				pbcnnn = N - 1 - mmm;
+				firstDummy = spinConf[idxConv(N,iii,N - 1)];
+				secondDummy = -spinConf[idxConv(N,iii,0)];
+
 				layerSx = ( firstDummy == secondDummy );
-				corr[nnn-mmm] += firstSx*layerSx;
+				corr[pbcnnn] += firstSx*layerSx;
 			}
 
-			// Deal with boundary case : nnn = N - 1
-			firstDummy = spinConf[idxConv(N,iii,N - 1)];
-			secondDummy = -spinConf[idxConv(N,iii,0)];
-			layerSx = ( firstDummy == secondDummy );
-			corr[N - 1 - mmm] += firstSx*layerSx;
+			// -> And then for the rest
+			for(int nnn = N - mmm; nnn < N; ++nnn)
+			{
+				firstDummy = spinConf[idxConv(N,iii,mmm + nnn - N)];
+				secondDummy = -spinConf[idxConv(N,iii,mmm + nnn -N +1)];
+
+				layerSx = ( firstDummy == secondDummy );
+				corr[nnn] += firstSx*layerSx;
+			}
+//			firstDummy = spinConf[idxConv(N,iii,mmm)];
+//			if(mmm != N - 1)
+//			{
+//				secondDummy = -spinConf[idxConv(N,iii,mmm+1)];
+//			}
+//			else
+//			{
+//				secondDummy = -spinConf[idxConv(N,iii,0)];
+//			}
+//			firstSx = ( firstDummy == secondDummy );
+//
+//			// Cover *most* of the layers
+//			for(int nnn = 0; nnn < mmm; ++nnn)
+//			{
+//				firstDummy = spinConf[idxConv(N,iii,nnn)];
+//				secondDummy = -spinConf[idxConv(N,iii,nnn+1)];
+//				layerSx = ( firstDummy == secondDummy );
+//				corr[N - mmm+nnn] += firstSx*layerSx;
+//			}
+//
+//			for(int nnn = mmm; nnn < N - 1; ++nnn)
+//			{
+//				firstDummy = spinConf[idxConv(N,iii,nnn)];
+//				secondDummy = -spinConf[idxConv(N,iii,nnn+1)];
+//				layerSx = ( firstDummy == secondDummy );
+//				corr[nnn-mmm] += firstSx*layerSx;
+//			}
+//
+//			// Deal with boundary case : nnn = N - 1
+//			firstDummy = spinConf[idxConv(N,iii,N - 1)];
+//			secondDummy = -spinConf[idxConv(N,iii,0)];
+//			layerSx = ( firstDummy == secondDummy );
+//			corr[N - 1 - mmm] += firstSx*layerSx;
 		}
 	}
 

@@ -2,8 +2,8 @@
 # Parameters for the periodic boundary conditions
 # !!! DO NOT REMOVE LINES OR CHANGE THEIR ORDER
 # -> Partition problem / spin 1/2 geometry
-6	= nx
-6	= ny
+12	= nx
+12	= ny
 6	= NbOfNeighs
 #
 # -> Hamiltonian parameters
@@ -23,17 +23,17 @@
 0	= shift_3
 #
 # -> Monte-Carlo parameters
-240	= Number of stacks
+480	= Number of stacks
 0.08	= Delta Beta
 0	= Number of iterations before calculating an observable
 	  If set to 0, the program will use an default value N * L
-5000	= Number of measures
-2500	= Measures to use
+10000	= Number of measures
+7500	= Measures to use
 128	= Length of autocorrelations
 256	= Minimal number of bins
 #
 # -> Machine options
-3       = Type of output file
+0       = Type of output file
           0 : Direct (Lab --- old, home)       1 : Parallel (Lab --- old)
           2 : Torque (totoro, MESU)            3 : SLURM (Lab)
 4       = Total number of processors
@@ -47,5 +47,5 @@
 install_test
 #
 # Executable to use :
-CMC_Mixed_Faster_Lab
+CMC_Mixed
 ###############################################################################
